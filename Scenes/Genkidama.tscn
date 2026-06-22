@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://ht1s5dpug3jx"]
+
+[ext_resource type="Texture2D" uid="uid://stn05s6k1r3v" path="res://Assets/Luchadores/goku/bola.png" id="1_ls3dp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jtfs7"]
+atlas = ExtResource("1_ls3dp")
+region = Rect2(0, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ied4"]
+atlas = ExtResource("1_ls3dp")
+region = Rect2(64, 0, 64, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bp2gk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jtfs7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ied4")
+}],
+"loop": true,
+"name": &"bola",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nhtco"]
+radius = 27.073973
+
+[node name="Genkidama" type="Area2D" unique_id=1581851290]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=619595561]
+sprite_frames = SubResource("SpriteFrames_bp2gk")
+animation = &"bola"
+frame_progress = 0.22508062
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1312659776]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_nhtco")
+debug_color = Color(0.8592194, 0.0851037, 0.850682, 0.41960785)

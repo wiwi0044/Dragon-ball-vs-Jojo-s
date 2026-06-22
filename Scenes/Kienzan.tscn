@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://b4j0oqfhdu7r7"]
+
+[ext_resource type="Texture2D" uid="uid://7iek1jh524a5" path="res://Assets/Luchadores/goku/kienzan.png" id="1_fxw6h"]
+[ext_resource type="Script" uid="uid://rbjbw8n2ax4w" path="res://Scripts/kienzan.gd" id="1_igfdl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igfdl"]
+atlas = ExtResource("1_fxw6h")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v0126"]
+atlas = ExtResource("1_fxw6h")
+region = Rect2(240, 0, 48, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k0eu5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igfdl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v0126")
+}],
+"loop": true,
+"name": &"kienzanDisparo",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rdxj2"]
+size = Vector2(66, 20)
+
+[node name="Kienzan" type="Area2D" unique_id=1007404145]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_igfdl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=190137597]
+position = Vector2(0, -31)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_k0eu5")
+animation = &"kienzanDisparo"
+frame = 1
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1965024239]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_rdxj2")
