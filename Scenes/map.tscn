@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bydnsfpr36p7l"]
+
+[ext_resource type="Script" uid="uid://d0m4a17d0m5rl" path="res://scripts/map.gd" id="1_gldc4"]
+[ext_resource type="Texture2D" uid="uid://cowuvuif0lnfa" path="res://assets/Escenarios/EscenarioColiseo.png" id="2_0cso3"]
+[ext_resource type="PackedScene" uid="uid://js47g7mtlqo3" path="res://scenes/JotaroChar.tscn" id="2_gldc4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gldc4"]
+size = Vector2(1324, 184.5)
+
+[node name="Node2D" type="Node2D" unique_id=1676162021]
+script = ExtResource("1_gldc4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=802459956]
+position = Vector2(575.99994, 324)
+scale = Vector2(0.75, 0.63281244)
+texture = ExtResource("2_0cso3")
+
+[node name="Jotaro" parent="." unique_id=682881621 instance=ExtResource("2_gldc4")]
+position = Vector2(116, 447)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1975907153]
+
+[node name="Suelo" type="CollisionShape2D" parent="StaticBody2D" unique_id=596036955]
+position = Vector2(596, 681.25)
+shape = SubResource("RectangleShape2D_gldc4")
