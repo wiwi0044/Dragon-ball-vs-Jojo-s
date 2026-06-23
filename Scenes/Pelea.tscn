@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://f1yb0t7d7xyc"]
+
+[ext_resource type="Script" uid="uid://nud2syfigth8" path="res://Scripts/pelea.gd" id="1_xxw0l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qdgu5"]
+bg_color = Color(0, 0, 0, 0.26666668)
+corner_detail = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuup3"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bsjpd"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viyni"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mj7jr"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rxem0"]
+bg_color = Color(0, 0, 0, 0.29411766)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cjr17"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqkc6"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_luia0"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybjba"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_egmyl"]
+size = Vector2(17, 689)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qdgu5"]
+size = Vector2(676, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tuup3"]
+size = Vector2(1171, 55)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bsjpd"]
+size = Vector2(1160, 59)
+
+[node name="Pelea" type="Node2D" unique_id=1231105550]
+script = ExtResource("1_xxw0l")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=6296466]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SpawnJ1" type="Marker2D" parent="." unique_id=496697367]
+position = Vector2(100, 550)
+
+[node name="SpawnJ2" type="Marker2D" parent="." unique_id=1621064568]
+position = Vector2(1000, 550)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1861236009]
+offset = Vector2(10, 10)
+scale = Vector2(0.9, 1)
+transform = Transform2D(0.9, 0, 0, 1, 10, 10)
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1488228907]
+offset_right = 604.0
+offset_bottom = 67.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qdgu5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer" unique_id=1829175383]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/PanelContainer/HBoxContainer" unique_id=1726617362]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/HBoxContainer" unique_id=129883478]
+layout_mode = 2
+
+[node name="BarraVida" type="ProgressBar" parent="CanvasLayer/PanelContainer/HBoxContainer/VBoxContainer" unique_id=298778845]
+custom_minimum_size = Vector2(450, 40)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_tuup3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bsjpd")
+value = 100.0
+show_percentage = false
+
+[node name="BarraKi" type="ProgressBar" parent="CanvasLayer/PanelContainer/HBoxContainer/VBoxContainer" unique_id=2111609419]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_viyni")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mj7jr")
+value = 50.0
+show_percentage = false
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1023236072]
+offset = Vector2(20, 10)
+scale = Vector2(0.9, 1)
+transform = Transform2D(0.9, 0, 0, 1, 20, 10)
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer2" unique_id=326732834]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -512.0
+offset_right = 92.0
+offset_bottom = 67.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rxem0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer2/PanelContainer" unique_id=897048042]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer2/PanelContainer/HBoxContainer" unique_id=1455856846]
+layout_mode = 2
+
+[node name="enemigoVida" type="ProgressBar" parent="CanvasLayer2/PanelContainer/HBoxContainer/VBoxContainer" unique_id=1312701302]
+custom_minimum_size = Vector2(450, 40)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_cjr17")
+theme_override_styles/fill = SubResource("StyleBoxFlat_yqkc6")
+show_percentage = false
+
+[node name="enemigoKi" type="ProgressBar" parent="CanvasLayer2/PanelContainer/HBoxContainer/VBoxContainer" unique_id=1065855650]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_luia0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ybjba")
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer2/PanelContainer/HBoxContainer" unique_id=1919905180]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+expand_mode = 2
+
+[node name="CapaCegera" type="CanvasLayer" parent="." unique_id=1104119551]
+layer = 0
+
+[node name="Fondo_blanco" type="ColorRect" parent="CapaCegera" unique_id=1204406739]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LimitesEscena" type="Node2D" parent="." unique_id=1546298219]
+
+[node name="izq" type="StaticBody2D" parent="LimitesEscena" unique_id=983481767]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitesEscena/izq" unique_id=468557996]
+position = Vector2(-1.5, 334.5)
+shape = SubResource("RectangleShape2D_egmyl")
+
+[node name="der" type="StaticBody2D" parent="LimitesEscena" unique_id=100177725]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitesEscena/der" unique_id=1298264790]
+position = Vector2(1152, 325)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_qdgu5")
+
+[node name="techo" type="StaticBody2D" parent="LimitesEscena" unique_id=1014784850]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitesEscena/techo" unique_id=2111840093]
+position = Vector2(581, 60)
+shape = SubResource("RectangleShape2D_tuup3")
+
+[node name="suelo" type="StaticBody2D" parent="LimitesEscena" unique_id=1685039691]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitesEscena/suelo" unique_id=1252005928]
+position = Vector2(579, 613)
+shape = SubResource("RectangleShape2D_bsjpd")

@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://1x7qqjmsxluf"]
+
+[ext_resource type="Script" uid="uid://b3ovmqi06rmeh" path="res://Scripts/SeleccionPersonaje.gd" id="1_j8hod"]
+
+[node name="SeleccioPersonaje" type="Control" unique_id=1517603462]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_j8hod")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1605270025]
+layout_mode = 0
+offset_right = 1161.0
+offset_bottom = 658.0
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=340003590]
+layout_mode = 0
+offset_right = 1161.0
+offset_bottom = 658.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1874439822]
+layout_mode = 0
+offset_left = 246.0
+offset_top = 60.0
+offset_right = 964.0
+offset_bottom = 714.0
+
+[node name="PanelJugador1" type="VBoxContainer" parent="HBoxContainer" unique_id=1695544320]
+layout_mode = 2
+
+[node name="LabelJ1" type="Label" parent="HBoxContainer/PanelJugador1" unique_id=2122059399]
+layout_mode = 2
+text = "Jugador 1
+"
+
+[node name="ImagenJ1" type="TextureRect" parent="HBoxContainer/PanelJugador1" unique_id=1921973970]
+layout_mode = 2
+
+[node name="BotonesJ1" type="HBoxContainer" parent="HBoxContainer/PanelJugador1" unique_id=377445703]
+layout_mode = 2
+
+[node name="Jotaro" type="Button" parent="HBoxContainer/PanelJugador1/BotonesJ1" unique_id=1566636327]
+layout_mode = 2
+text = "Jotaro
+"
+
+[node name="Goku" type="Button" parent="HBoxContainer/PanelJugador1/BotonesJ1" unique_id=928552037]
+layout_mode = 2
+text = "Goku
+"
+
+[node name="PanelEscenario" type="VBoxContainer" parent="HBoxContainer" unique_id=816329441]
+layout_mode = 2
+
+[node name="LabelEscenario" type="Label" parent="HBoxContainer/PanelEscenario" unique_id=286741346]
+layout_mode = 2
+text = "Escenario
+"
+
+[node name="ImagenEscenario" type="TextureRect" parent="HBoxContainer/PanelEscenario" unique_id=1575055625]
+layout_mode = 2
+
+[node name="BotonEscenario" type="Button" parent="HBoxContainer/PanelEscenario" unique_id=1820504167]
+layout_mode = 2
+
+[node name="PanelJugador2" type="VBoxContainer" parent="HBoxContainer" unique_id=1785145078]
+layout_mode = 2
+
+[node name="LabelJ2" type="Label" parent="HBoxContainer/PanelJugador2" unique_id=1291296894]
+layout_mode = 2
+text = "Jugador 2
+"
+
+[node name="ImagenJ2" type="TextureRect" parent="HBoxContainer/PanelJugador2" unique_id=1464978450]
+layout_mode = 2
+
+[node name="BotonesJ2" type="HBoxContainer" parent="HBoxContainer/PanelJugador2" unique_id=592893682]
+layout_mode = 2
+
+[node name="BotonGokuJ2" type="Button" parent="HBoxContainer/PanelJugador2/BotonesJ2" unique_id=1035207920]
+layout_mode = 2
+text = "Goku
+"
+
+[node name="BotonJotaroJ2" type="Button" parent="HBoxContainer/PanelJugador2/BotonesJ2" unique_id=1073453192]
+layout_mode = 2
+text = "Jotaro"
+
+[node name="BotonComenzar" type="Button" parent="." unique_id=314807432]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 329.0
+offset_right = 431.0
+offset_bottom = 360.0
+text = "Comenzar"
+
+[connection signal="pressed" from="HBoxContainer/PanelJugador1/BotonesJ1/Jotaro" to="." method="_on_jotaro_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelJugador1/BotonesJ1/Goku" to="." method="_on_goku_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelJugador2/BotonesJ2/BotonGokuJ2" to="." method="_on_boton_goku_j_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelJugador2/BotonesJ2/BotonJotaroJ2" to="." method="_on_boton_jotaro_j_2_pressed"]
+[connection signal="pressed" from="BotonComenzar" to="." method="_on_boton_comenzar_pressed"]

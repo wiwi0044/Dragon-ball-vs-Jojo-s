@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://bw4kmleuvvf3k"]
+
+[ext_resource type="Script" uid="uid://bh7v0xc3s258u" path="res://Scripts/MenuPrincipa.gd" id="1_3k1ur"]
+[ext_resource type="FontFile" uid="uid://mhfeohkp22ju" path="res://Scenes/8-bit Arcade In.ttf" id="2_wvohi"]
+
+[sub_resource type="Gradient" id="Gradient_3k1ur"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wvohi"]
+gradient = SubResource("Gradient_3k1ur")
+
+[node name="MenuPrincipal" type="Control" unique_id=869095341]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3k1ur")
+
+[node name="FondoMenu" type="TextureRect" parent="." unique_id=771565196]
+modulate = Color(0, 0.63497096, 0.6074704, 1)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture1D_wvohi")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=516471933]
+layout_mode = 0
+offset_left = 218.0
+offset_top = 113.0
+offset_right = 973.0
+offset_bottom = 525.0
+
+[node name="TituloJuego" type="Label" parent="VBoxContainer" unique_id=1272903243]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wvohi")
+theme_override_font_sizes/font_size = 80
+text = "Dragon ball vs jojos"
+horizontal_alignment = 1
+
+[node name="Jugar" type="Button" parent="VBoxContainer" unique_id=1845242050]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wvohi")
+text = "Jugar"
+
+[node name="Salir" type="Button" parent="VBoxContainer" unique_id=2083713929]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wvohi")
+text = "Salir"
+
+[connection signal="pressed" from="VBoxContainer/Jugar" to="." method="_on_jugar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Salir" to="." method="_on_salir_pressed"]
