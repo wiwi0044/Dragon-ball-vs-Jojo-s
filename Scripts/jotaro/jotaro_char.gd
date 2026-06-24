@@ -2,7 +2,10 @@ extends CharacterBody2D
 
 @onready var animation_player: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_stand: AnimatedSprite2D = $Node2D/StarPlatinum
+@onready var hitbox_player: AnimationPlayer = $AnimationPlayer
+@onready var hitbox_area: Area2D = $Area2D
 
+@onready var hitbox_golpe: Area2D = $Area2D
 @onready var hitbox_shape: CollisionShape2D=$Area2D/hitboxAtaque
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -14,6 +17,7 @@ var attack_count := 0
 var attack_timer := 0.0
 var is_attacking := false
 var is_stand_attacking := false
+var is_recharging := false  
 
 var dash_count_left := 0
 var dash_count_right := 0
@@ -28,8 +32,13 @@ var sufijo: String = "J1"
 
 @export var oponente: Node2D
 @export var barra_vida: ProgressBar
+@export var barra_ki: ProgressBar          
 @export var vida_maxima: float = 500.0
 var vida_actual: float = 500.0
+
+@export var ki_maximo: float = 300.0       # 👈 nuevo
+var ki_actual: float = 100.0               # 👈 nuevo
+@export var velocidad_recarga: float = 30.0 # 👈 nuevo
 
 var colores_vida = [
 	Color("ff3b30"),
@@ -39,12 +48,30 @@ var colores_vida = [
 	Color("5ac8fa")
 ]
 
+var colores_ki = [                         # 👈 nuevo
+	Color("0033aa"),
+	Color("0055ff"),
+	Color("33ccff")
+]
+
 func _ready() -> void:
 	animation_stand.visible = false
+	hitbox_area.body_entered.connect(_on_golpe_conectado)
+	hitbox_player.play("Parado")  # 👈 animación de hitbox al inicio
 
 var tiempo_kaioken: float = 0.0
 
 func _physics_process(delta: float) -> void:
+	# --- Actualizar barras ---
+	if barra_vida:
+		actualizar_barra_por_capas(barra_vida, vida_actual, vida_maxima, colores_vida)
+	if barra_ki:                           # 👈 nuevo
+		actualizar_barra_por_capas(barra_ki, ki_actual, ki_maximo, colores_ki)
+
+	# --- Recarga de Ki ---
+	if is_recharging:                      # 👈 nuevo
+		ki_actual = min(ki_actual + velocidad_recarga * delta, ki_maximo)
+
 	if inputs_desactivados:
 		tiempo_kaioken += delta
 		if not is_on_floor() or tiempo_kaioken < 0.1:
@@ -66,6 +93,19 @@ func _physics_process(delta: float) -> void:
 		dash_timer_duration -= delta
 	else:
 		is_dashing = false
+
+	# --- Recargar Ki con tecla ---           👈 nuevo bloque
+	if Input.is_action_just_pressed("recargar" + sufijo) and is_on_floor() and not is_attacking and not is_stand_attacking and not is_dashing:
+		is_recharging = true
+		hitbox_player.play("Cargando")
+		animation_player.play("Parado")
+	if Input.is_action_just_released("recargar" + sufijo):
+		is_recharging = false
+		hitbox_player.stop()
+
+	if is_recharging:                      # 👈 bloquear acciones mientras recarga
+		move_and_slide()
+		return
 
 	if not is_dashing and is_on_floor():
 		if Input.is_action_just_pressed("izquierda" + sufijo):
@@ -96,19 +136,25 @@ func _physics_process(delta: float) -> void:
 	if dash_timer_right <= 0:
 		dash_count_right = 0
 
+	# --- Ráfaga (cuesta 100 Ki) ---         👈 chequeo de Ki
 	if Input.is_action_just_pressed("especial1" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
-		attack_count = 0
-		is_stand_attacking = true
-		animation_stand.visible = true
-		animation_stand.play("Rafaga")
-		animation_player.play("Parado")
+		if ki_actual >= 100:
+			ki_actual -= 100
+			attack_count = 0
+			is_stand_attacking = true
+			animation_stand.visible = true
+			animation_stand.play("Rafaga")
+			animation_player.play("Parado")
 
+	# --- Uppercut (cuesta 50 Ki) ---        👈 chequeo de Ki
 	if Input.is_action_just_pressed("golpe" + sufijo) and Input.is_action_pressed("arriba" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
-		attack_count = 0
-		is_stand_attacking = true
-		animation_stand.visible = true
-		animation_player.play("Parado")
-		animation_stand.play("Uppercut")
+		if ki_actual >= 50:
+			ki_actual -= 50
+			attack_count = 0
+			is_stand_attacking = true
+			animation_stand.visible = true
+			animation_player.play("Parado")
+			animation_stand.play("Uppercut")
 
 	if Input.is_action_just_pressed("golpe" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking:
 		attack_count += 1
@@ -116,8 +162,10 @@ func _physics_process(delta: float) -> void:
 		is_attacking = true
 		if attack_count == 1:
 			animation_player.play("Golpe")
+			hitbox_player.play("golpeJotaro")
 		elif attack_count == 2:
 			animation_player.play("Patada")
+			hitbox_player.play("patadaJotaro")
 		elif attack_count >= 3:
 			attack_count = 0
 			is_attacking = false
@@ -144,6 +192,7 @@ func _physics_process(delta: float) -> void:
 			animation_player.play("SaltoCaida")
 		is_attacking = false
 		is_stand_attacking = false
+		is_recharging = false              # 👈 cancela recarga si salta
 		animation_stand.visible = false
 
 	if Input.is_action_just_pressed("arriba" + sufijo) and is_on_floor():
@@ -156,25 +205,41 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	elif direction:
 		velocity.x = direction * SPEED
-		animation_player.flip_h = direction < 0
-		animation_stand.flip_h = direction < 0
 		if is_on_floor():
 			animation_player.play("Caminar")
+		if oponente:
+			var dir_to_op = sign(oponente.global_position.x - global_position.x)
+			var moviendose_atras = sign(direction) != sign(dir_to_op)
+			if moviendose_atras:
+				animation_player.flip_h = direction < 0
+				animation_stand.flip_h = direction < 0
+			else:
+				animation_player.flip_h = dir_to_op < 0
+				animation_stand.flip_h = dir_to_op < 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		if is_on_floor():
 			animation_player.play("Parado")
+			hitbox_player.play("Parado")  # 👈 agrega esto
 
 	move_and_slide()
 
-	if barra_vida:
-		actualizar_barra_por_capas(barra_vida, vida_actual, vida_maxima, colores_vida)
-
 	if oponente:
-		var dir_to_oponente = sign(oponente.global_position.x - global_position.x)
+		var dir_to_oponente: float = sign(oponente.global_position.x - global_position.x)
+		var direction_actual: float = Input.get_axis("izquierda" + sufijo, "derecha" + sufijo)
+		var moviendose_atras: bool = direction_actual != 0 and sign(direction_actual) != sign(dir_to_oponente)
 		if not is_dashing and not is_attacking and not is_stand_attacking and is_on_floor():
-			animation_player.flip_h = dir_to_oponente < 0
-			animation_stand.flip_h = dir_to_oponente < 0
+			if not moviendose_atras:
+				animation_player.flip_h = dir_to_oponente < 0
+				animation_stand.flip_h = dir_to_oponente < 0
+
+func golpear_oponente(cantidad: float) -> void:
+	if oponente and oponente.has_method("recibir_daño"):
+		oponente.recibir_daño(cantidad)
+
+func golpear_oponente_especial(cantidad: float) -> void:
+	if oponente and oponente.has_method("recibir_daño_especial"):
+		oponente.recibir_daño_especial(cantidad)
 
 func recibir_daño(cantidad: float) -> void:
 	vida_actual = max(vida_actual - cantidad, 0)
@@ -186,7 +251,7 @@ func recibir_daño_especial(cantidad: float) -> void:
 
 func recibir_golpe_kaioken(cantidad: float, impulso: Vector2) -> void:
 	recibir_daño(cantidad)
-	velocity=impulso
+	velocity = impulso
 	desactivar_inputs()
 
 func actualizar_barra_por_capas(barra: ProgressBar, valor_actual: float, valor_maximo: float, lista_colores: Array) -> void:
@@ -214,8 +279,17 @@ func configurar(config: Dictionary) -> void:
 		sufijo = config["sufijo"]
 	if config.has("barra_vida"):
 		barra_vida = config["barra_vida"]
+	if config.has("barra_ki"):             # 👈 nuevo
+		barra_ki = config["barra_ki"]
 	if config.has("oponente"):
 		oponente = config["oponente"]
+
+func _on_golpe_conectado(body: Node) -> void:
+	if body == oponente:
+		if is_attacking:
+			golpear_oponente(10)
+		elif is_stand_attacking:
+			golpear_oponente_especial(30)
 
 func desactivar_inputs() -> void:
 	inputs_desactivados = true
