@@ -5,13 +5,25 @@ var escenas_personajes = {
 	"jotaro": preload("res://Scenes/jotario/JotaroChar.tscn")
 }
 
+var fondos = {
+	"Coliseo": "res://Assets/fondos/EscenarioColiseo.png",
+	"Morioh": "res://Assets/fondos/moriohEscenario.png",
+	"Torneo": "res://Assets/fondos/torneo.png",
+}
+
 @onready var spawn_j1: Marker2D = $SpawnJ1
 @onready var spawn_j2: Marker2D = $SpawnJ2
 
 func _ready() -> void:
+		
 	for limite in $LimitesEscena.get_children():
 		limite.collision_layer = 4
 		limite.collision_mask = 0
+		
+	print("escenario: '", GlobalData.escenario, "'")
+	if GlobalData.escenario in fondos:
+		$Fondo.texture = load(fondos[GlobalData.escenario])
+	
 	var j1 = escenas_personajes[GlobalData.personaje_j1].instantiate()
 	var j2 = escenas_personajes[GlobalData.personaje_j2].instantiate()
 	add_child(j1)
@@ -25,8 +37,8 @@ func _ready() -> void:
 	_configurar_hitbox(j1, 4, 2)
 	_configurar_hitbox(j2, 8, 1)
 
-	$"CanvasLayer/PanelContainer/HBoxContainer/TextureRect".texture = load("res://Assets/Luchadores/" + GlobalData.personaje_j1 + "/preview.png")
-	$"CanvasLayer2/PanelContainer/HBoxContainer/TextureRect".texture = load("res://Assets/Luchadores/" + GlobalData.personaje_j2 + "/preview.png")
+	$"CanvasLayer/PanelContainer/HBoxContainer/TextureRect".texture = load("res://Assets/Luchadores/" + GlobalData.personaje_j1 + "/icono.png")
+	$"CanvasLayer2/PanelContainer/HBoxContainer/TextureRect".texture = load("res://Assets/Luchadores/" + GlobalData.personaje_j2 + "/icono.png")
 
 	j1.configurar({
 		"sufijo": "J1",

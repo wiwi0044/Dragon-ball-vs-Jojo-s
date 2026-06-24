@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://danu0qlmy7qq5"
-path="res://.godot/imported/preview.png-101f512eab766b937e3b04e9656d9bf6.ctex"
+uid="uid://bmotm5iry6kny"
+path="res://.godot/imported/icono.png-da363a4d77b50571b29d0f28e0eb8c66.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Luchadores/goku/preview.png"
-dest_files=["res://.godot/imported/preview.png-101f512eab766b937e3b04e9656d9bf6.ctex"]
+source_file="res://Assets/Luchadores/jotaro/icono.png"
+dest_files=["res://.godot/imported/icono.png-da363a4d77b50571b29d0f28e0eb8c66.ctex"]
 
 [params]
 

@@ -474,7 +474,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"golpe1",
-"speed": 6.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -876,10 +876,10 @@ texture_filter = 1
 position = Vector2(-23, -16)
 scale = Vector2(2.125, 2)
 sprite_frames = SubResource("SpriteFrames_t1ee5")
-animation = &"kaioken"
+animation = &"golpe2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1572064627]
-position = Vector2(-4, 4)
+position = Vector2(-21, 5)
 shape = SubResource("CapsuleShape2D_ksd7g")
 
 [node name="HitboxAtaque" type="Area2D" parent="." unique_id=1330873000]
@@ -887,7 +887,7 @@ collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxAtaque" unique_id=891466837]
-position = Vector2(22, -1)
+position = Vector2(12, 1)
 shape = SubResource("CircleShape2D_7vwnh")
 disabled = true
 debug_color = Color(0.5995789, 0.370223, 1, 0.41960785)

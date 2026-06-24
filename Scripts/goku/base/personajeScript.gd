@@ -128,6 +128,18 @@ func _physics_process(delta: float) -> void:
 	if estado_actual == Estado.RECARGAR:
 		ki_actual = min(ki_actual + velocidad_recarga * delta, ki_maximo)
 
+	if not inputs_desactivados and estado_actual not in [Estado.DERROTADO, Estado.INTRO, Estado.KAMEHAMEHA_DISPARO, Estado.RECARGAR]:
+		if Input.is_action_just_pressed("disparar" + sufijo):
+			cargando_ki = true
+			tiempo_ki_presionado = 0.0
+		if Input.is_action_just_released("disparar" + sufijo) and cargando_ki:
+			if ki_actual >= 100 and tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA:
+				cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
+			elif ki_actual >= 15:
+				_lanzar_rafaga()
+			cargando_ki = false
+			tiempo_ki_presionado = 0.0
+
 	move_and_slide()
 
 	match estado_actual:
@@ -138,10 +150,21 @@ func _physics_process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if inputs_desactivados:
-		return
+		return	
+	
 	if estado_actual == Estado.DERROTADO:
 		return
 	if estado_actual == Estado.INTRO:
+		return
+		
+	if Input.is_action_just_pressed("recargar" + sufijo):
+		cambiar_estado(Estado.RECARGAR)
+	if Input.is_action_just_released("recargar" + sufijo):
+		cambiar_estado(Estado.IDLE)
+	if estado_actual == Estado.RECARGAR:
+		return	
+		
+	if estado_actual == Estado.KAMEHAMEHA_DISPARO:
 		return
 		
 	if estado_actual == Estado.KAMEHAMEHA_CHOQUE:
@@ -156,50 +179,22 @@ func _input(event: InputEvent) -> void:
 	_detectar_doble_tap("derecha" + sufijo)
 	_detectar_doble_tap("arriba" + sufijo)
 	_detectar_doble_tap("abajo" + sufijo)
-
 	if Input.is_action_just_pressed("golpe" + sufijo):
 		_registrar_golpe()
 	if Input.is_action_just_pressed("patada" + sufijo):
 		_registrar_patada()
-	if Input.is_action_just_pressed("recargar" + sufijo):
-		cambiar_estado(Estado.RECARGAR)
-	if Input.is_action_just_released("recargar" + sufijo):
-		cambiar_estado(Estado.IDLE)
 	if Input.is_action_just_pressed("cubrirse" + sufijo):
 		cambiar_estado(Estado.CUBRIRSE)
 	if Input.is_action_just_released("cubrirse" + sufijo):
 		cambiar_estado(Estado.IDLE)
-
-	if Input.is_action_just_pressed("disparar" + sufijo):
-		var choque_activo := false
-		for hijo in get_parent().get_children():
-			if hijo.has_method("agregar_poder") and hijo.get("en_choque") and hijo.get("dueño") == self:
-				hijo.agregar_poder(50)
-				choque_activo = true
-				break
-		if not choque_activo and ki_actual >= 15:
-			cargando_ki = true
-			tiempo_ki_presionado = 0.0
-
-	if Input.is_action_just_released("disparar" + sufijo):
-		if cargando_ki:
-			if ki_actual >= 100 and tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA:
-				cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
-			elif ki_actual >= 15:
-				_lanzar_rafaga()
-		cargando_ki = false
-		tiempo_ki_presionado = 0.0
-
 	if Input.is_action_pressed("arriba" + sufijo) and Input.is_action_just_pressed("disparar" + sufijo):
 		if ki_actual >= 40:
 			cambiar_estado(Estado.KIENZAN_CARGA)
 			cargando_ki = false
-
 	if Input.is_action_just_pressed("especial1" + sufijo):
 		if estado_actual in [Estado.IDLE, Estado.VOLAR]:
 			cargando_ki = false
 			ejecutar_taioken()
-
 	if Input.is_action_just_pressed("especial2" + sufijo):
 		if ki_actual >= 100:
 			ki_actual -= 100
