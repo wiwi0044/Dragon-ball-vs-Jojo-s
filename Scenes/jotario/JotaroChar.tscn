@@ -641,7 +641,7 @@ tracks/5/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_labpi"]
-size = Vector2(23.1875, 22.8125)
+size = Vector2(89.375, 57.625)
 
 [sub_resource type="Animation" id="Animation_rst81"]
 resource_name = "rafagaStarPlatinum"
@@ -689,10 +689,10 @@ tracks/3/path = NodePath("Area2D/hitboxAtaque:shape:size")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.6, 0.6333333),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(89.375, 57.625), Vector2(89.375, 57.625)]
+"values": [Vector2(89.375, 57.625), Vector2(89.375, 57.625), Vector2(3.1875, 4.6875)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -713,10 +713,10 @@ tracks/5/path = NodePath("Area2D/hitboxAtaque:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.6, 0.6333333),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(58.5, 1), Vector2(58.5, 1)]
+"values": [Vector2(58.5, 1), Vector2(58.5, 1), Vector2(15.40625, 32.15625)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false

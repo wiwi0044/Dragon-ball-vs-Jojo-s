@@ -146,7 +146,6 @@ func _physics_process(delta: float) -> void:
 			animation_stand.play("Rafaga")
 			animation_player.play("Parado")
 
-	# --- Uppercut (cuesta 50 Ki) ---        👈 chequeo de Ki
 	if Input.is_action_just_pressed("golpe" + sufijo) and Input.is_action_pressed("arriba" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
 		if ki_actual >= 50:
 			ki_actual -= 50
@@ -213,9 +212,11 @@ func _physics_process(delta: float) -> void:
 			if moviendose_atras:
 				animation_player.flip_h = direction < 0
 				animation_stand.flip_h = direction < 0
+				animation_stand.position.x = -abs(animation_stand.position.x) if direction > 0 else abs(animation_stand.position.x)
 			else:
 				animation_player.flip_h = dir_to_op < 0
 				animation_stand.flip_h = dir_to_op < 0
+				animation_stand.position.x = abs(animation_stand.position.x) if dir_to_op > 0 else -abs(animation_stand.position.x)
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		if is_on_floor():
