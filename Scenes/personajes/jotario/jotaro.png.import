@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nlmaansycv20"
-path="res://.godot/imported/preview.png-148c8b19d21b772ad4a02fc8550cf1c2.ctex"
+uid="uid://b1jcvi8uihip"
+path="res://.godot/imported/jotaro.png-bfe2eb635cf22921a6d91847d5d4d593.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Luchadores/jotaro/preview.png"
-dest_files=["res://.godot/imported/preview.png-148c8b19d21b772ad4a02fc8550cf1c2.ctex"]
+source_file="res://Scenes/personajes/jotario/jotaro.png"
+dest_files=["res://.godot/imported/jotaro.png-bfe2eb635cf22921a6d91847d5d4d593.ctex"]
 
 [params]
 

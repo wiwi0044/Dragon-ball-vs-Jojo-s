@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nlmaansycv20"
-path="res://.godot/imported/preview.png-148c8b19d21b772ad4a02fc8550cf1c2.ctex"
+uid="uid://d2mu0gvh3uccw"
+path="res://.godot/imported/bola.png-79fa15b5dfd7e1aa750b1c93087083b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Luchadores/jotaro/preview.png"
-dest_files=["res://.godot/imported/preview.png-148c8b19d21b772ad4a02fc8550cf1c2.ctex"]
+source_file="res://Assets/Luchadores/freezer/bola.png"
+dest_files=["res://.godot/imported/bola.png-79fa15b5dfd7e1aa750b1c93087083b5.ctex"]
 
 [params]
 

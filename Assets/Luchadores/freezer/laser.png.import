@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1jcvi8uihip"
-path="res://.godot/imported/jotaro.png-75485645070611bbb256d7d6daaa8720.ctex"
+uid="uid://tqsluxhvx4t5"
+path="res://.godot/imported/laser.png-176b216bc9084999876ab1dc92b267fd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/jotario/jotaro.png"
-dest_files=["res://.godot/imported/jotaro.png-75485645070611bbb256d7d6daaa8720.ctex"]
+source_file="res://Assets/Luchadores/freezer/laser.png"
+dest_files=["res://.godot/imported/laser.png-176b216bc9084999876ab1dc92b267fd.ctex"]
 
 [params]
 

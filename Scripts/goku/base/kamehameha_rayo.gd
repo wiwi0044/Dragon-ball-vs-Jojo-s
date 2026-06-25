@@ -197,7 +197,7 @@ func _explotar() -> void:
 	fin.visible = false
 	colision.set_deferred("disabled", true)
 	choque_sprite.visible = false
-	explosion.position.x = ancho_inicio + largo_medio_actual + (ancho_fin / 2.0) - 200
+	explosion.position.x = ancho_inicio + largo_medio_actual
 	explosion.visible = true
 	explosion.play("explosion")
 

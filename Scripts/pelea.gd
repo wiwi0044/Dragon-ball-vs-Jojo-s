@@ -1,8 +1,9 @@
 extends Node2D
 
 var escenas_personajes = {
-	"goku": preload("res://Scenes/goku/base/Personaje.tscn"),
-	"jotaro": preload("res://Scenes/jotario/JotaroChar.tscn")
+	"goku": preload("res://Scenes/personajes/goku/base/Personaje.tscn"),
+	"jotaro": preload("res://Scenes/personajes/jotario/JotaroChar.tscn"),
+	"freezer": preload("res://Scenes/personajes/freezer/freezer.tscn"),
 }
 
 var fondos = {

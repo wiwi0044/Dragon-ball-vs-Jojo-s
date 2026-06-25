@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cwan6kxdmg34l"]
 
 [ext_resource type="Texture2D" uid="uid://c3a407ksipy8s" path="res://Assets/fondos/torneo.png" id="1_s5lfr"]
-[ext_resource type="PackedScene" uid="uid://bc8gd1ai2w3ma" path="res://Scenes/goku/base/Personaje.tscn" id="2_4l4ot"]
-[ext_resource type="PackedScene" uid="uid://bchbbtnkbo1qe" path="res://Scenes/goku/base/Oponente.tscn" id="3_n52pm"]
+[ext_resource type="PackedScene" uid="uid://bc8gd1ai2w3ma" path="res://Scenes/personajes/goku/base/Personaje.tscn" id="2_4l4ot"]
+[ext_resource type="PackedScene" uid="uid://bchbbtnkbo1qe" path="res://Scenes/personajes/goku/base/Oponente.tscn" id="3_n52pm"]
 [ext_resource type="Texture2D" uid="uid://hgawadtepsab" path="res://Assets/Luchadores/goku/base/gokuFace.png" id="4_ptm7l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qmj3w"]

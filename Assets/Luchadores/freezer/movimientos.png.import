@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nlmaansycv20"
-path="res://.godot/imported/preview.png-148c8b19d21b772ad4a02fc8550cf1c2.ctex"
+uid="uid://v5xh17me7710"
+path="res://.godot/imported/movimientos.png-cd9686a9953bd567f3e597e6f0b7e6af.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Luchadores/jotaro/preview.png"
-dest_files=["res://.godot/imported/preview.png-148c8b19d21b772ad4a02fc8550cf1c2.ctex"]
+source_file="res://Assets/Luchadores/freezer/movimientos.png"
+dest_files=["res://.godot/imported/movimientos.png-cd9686a9953bd567f3e597e6f0b7e6af.ctex"]
 
 [params]
 

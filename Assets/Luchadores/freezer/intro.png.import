@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bodbqm8cqrsdm"
-path="res://.godot/imported/freezer.png-19adba322dfad7541cc9baf892f897b4.ctex"
+uid="uid://bv2rhptquav37"
+path="res://.godot/imported/intro.png-33752f0f85a4a92cfdee76c0913cca41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Luchadores/freezer/freezer.png"
-dest_files=["res://.godot/imported/freezer.png-19adba322dfad7541cc9baf892f897b4.ctex"]
+source_file="res://Assets/Luchadores/freezer/intro.png"
+dest_files=["res://.godot/imported/intro.png-33752f0f85a4a92cfdee76c0913cca41.ctex"]
 
 [params]
 

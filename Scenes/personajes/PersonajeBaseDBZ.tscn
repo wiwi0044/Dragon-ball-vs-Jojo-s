@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dabvv6gm6vwvj"]
+
+[ext_resource type="Script" uid="uid://db2qovw74xcic" path="res://Scripts/scriptBaseDBZ.gd" id="1_nur03"]
+
+[node name="PersonajeBaseDbz" type="CharacterBody2D" unique_id=325128138]
+script = ExtResource("1_nur03")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=774102734]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1448280752]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=713033569]
+
+[node name="HitboxAtaque" type="Area2D" parent="." unique_id=169228225]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxAtaque" unique_id=306050410]
+
+[node name="PuntoDisparo" type="Marker2D" parent="." unique_id=1141341028]

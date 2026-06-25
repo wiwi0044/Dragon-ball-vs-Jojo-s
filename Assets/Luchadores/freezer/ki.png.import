@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckelss577o3ml"
-path="res://.godot/imported/preview.png-013862ed7810d2e509a8a67f68ea198b.ctex"
+uid="uid://chasbarfjoubr"
+path="res://.godot/imported/ki.png-9ba37f8e34a2906c5329fd75e3143370.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/goku/preview.png"
-dest_files=["res://.godot/imported/preview.png-013862ed7810d2e509a8a67f68ea198b.ctex"]
+source_file="res://Assets/Luchadores/freezer/ki.png"
+dest_files=["res://.godot/imported/ki.png-9ba37f8e34a2906c5329fd75e3143370.ctex"]
 
 [params]
 

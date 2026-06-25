@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b3ovmqi06rmeh" path="res://Scripts/SeleccionPersonaje.gd" id="1_j8hod"]
 [ext_resource type="Texture2D" uid="uid://dxrk2mnxywk1j" path="res://Assets/Luchadores/goku/icono.png" id="3_ghb5r"]
+[ext_resource type="Texture2D" uid="uid://cfxbqnt3xkphg" path="res://Assets/Luchadores/freezer/icono.png" id="4_ghb5r"]
 [ext_resource type="Texture2D" uid="uid://bmotm5iry6kny" path="res://Assets/Luchadores/jotaro/icono.png" id="4_ot7s7"]
 
 [node name="SeleccioPersonaje" type="Control" unique_id=1517603462]
@@ -49,18 +50,27 @@ stretch_mode = 6
 layout_mode = 2
 
 [node name="ImagenJ1" type="TextureRect" parent="." unique_id=1752616600]
-layout_mode = 0
-offset_left = 106.0
-offset_top = 344.0
-offset_right = 332.0
-offset_bottom = 642.0
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
 
 [node name="ImagenJ2" type="TextureRect" parent="." unique_id=1710744898]
-layout_mode = 0
-offset_left = 844.0
-offset_top = 349.0
-offset_right = 1074.0
-offset_bottom = 640.0
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+flip_h = true
 
 [node name="LabelJ1" type="Label" parent="." unique_id=1975168474]
 layout_mode = 0
@@ -101,5 +111,16 @@ offset_bottom = 180.0
 layout_mode = 2
 mouse_filter = 0
 texture = ExtResource("4_ot7s7")
+
+[node name="IconoFreezerPanel" type="PanelContainer" parent="." unique_id=664788454]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 191.0
+offset_right = 570.0
+offset_bottom = 271.0
+
+[node name="IconoFreezer" type="TextureRect" parent="IconoFreezerPanel" unique_id=1720747123]
+layout_mode = 2
+texture = ExtResource("4_ghb5r")
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/BotonComenzar" to="." method="_on_boton_comenzar_pressed"]

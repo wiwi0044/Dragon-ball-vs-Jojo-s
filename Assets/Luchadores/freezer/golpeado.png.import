@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3gaa11lbnbwy"
-path="res://.godot/imported/golpe.png-620a9ef7aae38416f3517415bc64adc4.ctex"
+uid="uid://04fh2xi767mt"
+path="res://.godot/imported/golpeado.png-3a7b3f6253ecd217fe3d873374d737cd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Luchadores/freezer/golpe.png"
-dest_files=["res://.godot/imported/golpe.png-620a9ef7aae38416f3517415bc64adc4.ctex"]
+source_file="res://Assets/Luchadores/freezer/golpeado.png"
+dest_files=["res://.godot/imported/golpeado.png-3a7b3f6253ecd217fe3d873374d737cd.ctex"]
 
 [params]
 

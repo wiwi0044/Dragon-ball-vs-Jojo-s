@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://byjj1dl84yu4x"]
 
-[ext_resource type="Script" uid="uid://d0m4a17d0m5rl" path="res://Scripts/map.gd" id="1_7jcvx"]
+[ext_resource type="Script" path="res://Scripts/map.gd" id="1_7jcvx"]
 [ext_resource type="Texture2D" uid="uid://cowuvuif0lnfa" path="res://Assets/fondos/EscenarioColiseo.png" id="2_eqwo1"]
-[ext_resource type="PackedScene" uid="uid://js47g7mtlqo3" path="res://Scenes/jotario/JotaroChar.tscn" id="3_lflub"]
+[ext_resource type="PackedScene" uid="uid://js47g7mtlqo3" path="res://Scenes/personajes/jotario/JotaroChar.tscn" id="3_lflub"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gldc4"]
 size = Vector2(1324, 184.5)

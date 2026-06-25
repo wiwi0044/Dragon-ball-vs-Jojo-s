@@ -28,17 +28,17 @@ const UMBRAL_GOLPEADO: float = 30.0
 const VENTANA_DAÑO: float = 1.5
 
 @onready var punto_disparo: Marker2D = $PuntoDisparo
-var bola_recta = preload("res://Scenes/goku/base/BolaRecta.tscn")
-var bola_diagonal = preload("res://Scenes/goku/base/BolaDiagonal.tscn")
-var kamehameha_scene = preload("res://Scenes/goku/base/KamehamehaRayo.tscn")
+var bola_recta = preload("res://Scenes/personajes/goku/base/BolaRecta.tscn")
+var bola_diagonal = preload("res://Scenes/personajes/goku/base/BolaDiagonal.tscn")
+var kamehameha_scene = preload("res://Scenes/personajes/goku/base/KamehamehaRayo.tscn")
 var ultima_rafaga: int = 2
 var tiempo_ki_presionado: float = 0.0
-const TIEMPO_CARGA_KAMEHAMEHA: float = 0.4
+const TIEMPO_CARGA_KAMEHAMEHA: float = 0.7
 var cargando_ki: bool = false
 var kamehameha_disparado: bool = false
 var kamehameha_activo: bool = false
 
-var kienzan_scene = preload("res://Scenes/goku/base/Kienzan.tscn")
+var kienzan_scene = preload("res://Scenes/personajes/goku/base/Kienzan.tscn")
 var kienzan_disparado: bool = false
 
 @export var fondo_blanco: ColorRect
@@ -133,10 +133,11 @@ func _physics_process(delta: float) -> void:
 			cargando_ki = true
 			tiempo_ki_presionado = 0.0
 		if Input.is_action_just_released("disparar" + sufijo) and cargando_ki:
-			if ki_actual >= 100 and tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA:
-				cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
-			elif ki_actual >= 15:
-				_lanzar_rafaga()
+			if estado_actual != Estado.KAMEHAMEHA_CARGA:  # agrega este check
+				if ki_actual >= 100 and tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA:
+					cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
+				elif ki_actual >= 15:
+					_lanzar_rafaga()
 			cargando_ki = false
 			tiempo_ki_presionado = 0.0
 
@@ -156,6 +157,10 @@ func _input(event: InputEvent) -> void:
 		return
 	if estado_actual == Estado.INTRO:
 		return
+	
+	if estado_actual == Estado.KAMEHAMEHA_CARGA:
+		return	
+		
 		
 	if Input.is_action_just_pressed("recargar" + sufijo):
 		cambiar_estado(Estado.RECARGAR)
@@ -163,7 +168,7 @@ func _input(event: InputEvent) -> void:
 		cambiar_estado(Estado.IDLE)
 	if estado_actual == Estado.RECARGAR:
 		return	
-		
+	
 	if estado_actual == Estado.KAMEHAMEHA_DISPARO:
 		return
 		
@@ -539,6 +544,8 @@ func _on_animation_finished() -> void:
 		if oponente and oponente.has_method("activar_inputs"):
 			oponente.activar_inputs()
 		cambiar_estado(Estado.IDLE)
+	elif estado_actual == Estado.KAMEHAMEHA_CARGA:
+		cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
 
 func ajustar_colision(pos: Vector2) -> void:
 	colision.position = pos
@@ -567,13 +574,13 @@ func _on_frame_changed() -> void:
 			var offset_x := 0.0
 			var offset_y := 0.0
 			if estado_actual == Estado.GOLPE1:
-				offset_x = 0.0 if not sprite.flip_h else -84.0
+				offset_x = 10 if not sprite.flip_h else -80.0
 				offset_y = 10
 			elif estado_actual == Estado.GOLPE2:
-				offset_x = -8 if not sprite.flip_h else -83
+				offset_x = 0 if not sprite.flip_h else -83
 				offset_y = 0
 			elif estado_actual == Estado.GOLPE3:
-				offset_x = 0.0 if not sprite.flip_h else -80
+				offset_x = 15.0 if not sprite.flip_h else -80
 				offset_y = 0
 			hitbox.position = Vector2(offset_x, offset_y)
 		else:
@@ -760,8 +767,8 @@ func _lanzar_rafaga() -> void:
 			cambiar_estado(Estado.RAFAGA1)
 
 func _disparar_kamehameha() -> void:
-	var daño: float = ki_actual * 0.8
-	ki_actual = 0.0
+	var daño: float = 100
+	ki_actual = ki_actual-100
 	kamehameha_activo = true
 	var k = kamehameha_scene.instantiate()
 	k.global_position = punto_disparo.global_position

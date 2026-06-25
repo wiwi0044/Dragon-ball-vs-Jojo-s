@@ -1,6 +1,11 @@
 extends Control
 
-var personajes = ["goku", "jotaro"]
+var personajes = [
+	{"nombre": "goku", "icono": "res://Assets/Luchadores/goku/icono.png", "preview": "res://Assets/Luchadores/goku/preview.png"},
+	{"nombre": "jotaro", "icono": "res://Assets/Luchadores/jotaro/icono.png", "preview": "res://Assets/Luchadores/jotaro/preview.png"},
+	{"nombre": "freezer", "icono": "res://Assets/Luchadores/freezer/icono.png", "preview": "res://Assets/Luchadores/freezer/preview.png"},
+]
+
 var escenarios = [
 	{"nombre": "Coliseo", "ruta": "res://Assets/fondos/EscenarioColiseo.png"},
 	{"nombre": "Morioh", "ruta": "res://Assets/fondos/moriohEscenario.png"},
@@ -22,8 +27,10 @@ var cursor_escenario: int = 0
 @onready var imagen_j2: TextureRect = $ImagenJ2
 @onready var panel_goku: PanelContainer = $IconoGokuPanel
 @onready var panel_jotaro: PanelContainer = $IconoJotaroPanel
+@onready var panel_freezer: PanelContainer = $IconoFreezerPanel
 @onready var icono_goku: TextureRect = $IconoGokuPanel/IconoGoku
 @onready var icono_jotaro: TextureRect = $IconoJotaroPanel/IconoJotaro
+@onready var icono_freezer: TextureRect = $IconoFreezerPanel/IconoFreezer
 @onready var escenario_panel: PanelContainer = $CenterContainer/VBoxContainer/EscenarioPanel
 
 var iconos: Array = []
@@ -31,11 +38,11 @@ var paneles: Array = []
 
 func _ready() -> void:
 	boton_comenzar.disabled = true
-	iconos = [icono_goku, icono_jotaro]
-	paneles = [panel_goku, panel_jotaro]
+	iconos = [icono_goku, icono_jotaro, icono_freezer]
+	paneles = [panel_goku, panel_jotaro, panel_freezer]
 
 	for i in iconos.size():
-		iconos[i].texture = load("res://Assets/Luchadores/" + personajes[i] + "/icono.png")
+		iconos[i].texture = load(personajes[i]["icono"])
 		iconos[i].mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	imagen_escenario.texture = load(escenarios[0]["ruta"])
@@ -59,8 +66,8 @@ func _input(event: InputEvent) -> void:
 			_resaltar()
 		if Input.is_action_just_pressed("golpeJ1"):
 			confirmado_j1 = true
-			personaje_j1 = personajes[cursor_j1]
-			imagen_j1.texture = load("res://Assets/Luchadores/" + personaje_j1 + "/preview.png")
+			personaje_j1 = personajes[cursor_j1]["nombre"]
+			imagen_j1.texture = load(personajes[cursor_j1]["preview"])
 			_resaltar()
 			_verificar_seleccion()
 
@@ -73,8 +80,8 @@ func _input(event: InputEvent) -> void:
 			_resaltar()
 		if Input.is_action_just_pressed("golpeJ2"):
 			confirmado_j2 = true
-			personaje_j2 = personajes[cursor_j2]
-			imagen_j2.texture = load("res://Assets/Luchadores/" + personaje_j2 + "/preview.png")
+			personaje_j2 = personajes[cursor_j2]["nombre"]
+			imagen_j2.texture = load(personajes[cursor_j2]["preview"])
 			_resaltar()
 			_verificar_seleccion()
 
@@ -92,7 +99,6 @@ func _input(event: InputEvent) -> void:
 		_resaltar()
 		_verificar_seleccion()
 
-	# navegar escenarios con arriba/abajo J1
 	if Input.is_action_just_pressed("arribaJ1"):
 		cursor_escenario = (cursor_escenario - 1 + escenarios.size()) % escenarios.size()
 		_actualizar_escenario()
