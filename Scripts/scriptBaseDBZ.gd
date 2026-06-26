@@ -1,6 +1,7 @@
 class_name PersonajeBaseDBZ
 extends CharacterBody2D
 
+@onready var ancla_hitbox: Marker2D = $AnclaHitbox
 enum Estado { INTRO, IDLE, ADELANTE, ATRAS, VOLAR, BAJAR, 
 	RAPIDO_ADELANTE, RAPIDO_ATRAS, RAPIDO_VOLAR, RAPIDO_BAJAR,
 	GOLPE1, GOLPE2, GOLPE3, PATADA1, PATADA2,
@@ -54,7 +55,6 @@ var mi_layer: int = 4
 var mi_mask: int = 2
 var inputs_desactivados: bool = false
 var mostrando_bajar: bool = false
-
 
 func _ready() -> void:
 	_inicializar_tiempos_tap()
@@ -130,7 +130,6 @@ func _input(event: InputEvent) -> void:
 
 	_input_especial(event)
 
-# sobreescribir en cada personaje para agregar ataques especiales
 func _input_especial(_event: InputEvent) -> void:
 	pass
 
@@ -169,7 +168,6 @@ func cambiar_estado(nuevo_estado: Estado) -> void:
 	estado_actual = nuevo_estado
 	_on_cambiar_estado(nuevo_estado)
 
-# sobreescribir en cada personaje para manejar animaciones
 func _on_cambiar_estado(nuevo_estado: Estado) -> void:
 	match nuevo_estado:
 		Estado.INTRO: sprite.play("intro")
@@ -263,8 +261,9 @@ func actualizar_estado(dir: Vector2) -> void:
 func orientar_a_oponente() -> void:
 	if oponente == null:
 		return
-	sprite.flip_h = oponente.global_position.x < global_position.x
+	var direction = oponente.global_position.x < global_position.x
 	sprite.rotation = 0.0
+	sprite.scale.x = -2.0 if direction else 2.0
 
 func _on_animation_finished() -> void:
 	match estado_actual:
