@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://db2qovw74xcic" path="res://Scripts/scriptBaseDBZ.gd" id="1_nur03"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nur03"]
-radius = 2.828427
+radius = 1.0
 
 [node name="PersonajeBaseDbz" type="CharacterBody2D" unique_id=325128138]
 script = ExtResource("1_nur03")
@@ -24,7 +24,6 @@ update_scale = false
 [node name="AnclaHitbox" type="Marker2D" parent="." unique_id=679227119]
 
 [node name="HitboxAtaque" type="Area2D" parent="." unique_id=951052559]
-position = Vector2(10, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxAtaque" unique_id=1200508024]
 shape = SubResource("CircleShape2D_nur03")
