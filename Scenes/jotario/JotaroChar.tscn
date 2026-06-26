@@ -60,6 +60,11 @@
 [ext_resource type="Texture2D" uid="uid://dn2mrhy0du20w" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCargar1.png" id="30_ss8s6"]
 [ext_resource type="Texture2D" uid="uid://cx5b2qt42yx6j" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCargar2.png" id="31_labpi"]
 [ext_resource type="Texture2D" uid="uid://b2nyvxedrvndl" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCargar3.png" id="32_rst81"]
+[ext_resource type="Texture2D" uid="uid://dnlrrx3ahmw61" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroDerrota.png" id="38_vnfjw"]
+[ext_resource type="Texture2D" uid="uid://bu71vinr2apfn" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroLlamar.png" id="42_tiv02"]
+[ext_resource type="Texture2D" uid="uid://co8dprregpk7s" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroVolando1.png" id="63_7ki53"]
+[ext_resource type="Texture2D" uid="uid://dbr2s056mwvie" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroVolando2.png" id="64_5wi8m"]
+[ext_resource type="Texture2D" uid="uid://c0asatxkysgvy" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroVolando3.png" id="65_7ekqb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dro8b"]
 animations = [{
@@ -139,6 +144,50 @@ animations = [{
 "speed": 11.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ekqb"]
+atlas = ExtResource("38_vnfjw")
+region = Rect2(0, 0, 48, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e5sps"]
+atlas = ExtResource("38_vnfjw")
+region = Rect2(48, 0, 48, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8i3ga"]
+atlas = ExtResource("38_vnfjw")
+region = Rect2(96, 0, 48, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bx1y"]
+atlas = ExtResource("38_vnfjw")
+region = Rect2(144, 0, 48, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bg304"]
+atlas = ExtResource("38_vnfjw")
+region = Rect2(192, 0, 48, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ex63q"]
+atlas = ExtResource("38_vnfjw")
+region = Rect2(240, 0, 48, 63)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnfjw"]
+atlas = ExtResource("42_tiv02")
+region = Rect2(0, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goxlr"]
+atlas = ExtResource("42_tiv02")
+region = Rect2(48, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xca6k"]
+atlas = ExtResource("42_tiv02")
+region = Rect2(96, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ki53"]
+atlas = ExtResource("42_tiv02")
+region = Rect2(144, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wi8m"]
+atlas = ExtResource("42_tiv02")
+region = Rect2(192, 0, 48, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_2n44k"]
 animations = [{
 "frames": [{
@@ -211,6 +260,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_7ekqb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e5sps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8i3ga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4bx1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bg304")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ex63q")
+}],
+"loop": false,
+"name": &"Derrota",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("15_w46a3")
 }, {
 "duration": 1.0,
@@ -225,6 +297,26 @@ animations = [{
 "loop": false,
 "name": &"Golpe",
 "speed": 11.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnfjw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goxlr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xca6k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ki53")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wi8m")
+}],
+"loop": false,
+"name": &"Llamar",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -302,6 +394,20 @@ animations = [{
 "loop": true,
 "name": &"SaltoSubida",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("63_7ki53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_5wi8m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_7ekqb")
+}],
+"loop": true,
+"name": &"Volando",
+"speed": 8.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w0uk1"]
@@ -834,7 +940,7 @@ _data = {
 }
 
 [node name="Jotaro" type="CharacterBody2D" unique_id=682881621]
-scale = Vector2(2, 2)
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_i1aow")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=880520067]

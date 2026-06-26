@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://4aowobnd75rq"]
+
+[ext_resource type="Texture2D" uid="uid://cdulmhevtbm4l" path="res://Assets/Luchadores/jotaro/Cruseaders/Kakyoin.png" id="1_3xjqt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmn3g"]
+atlas = ExtResource("1_3xjqt")
+region = Rect2(800, 0, 80, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_koit7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmn3g")
+}],
+"loop": true,
+"name": &"Emerald",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5y5nv"]
+size = Vector2(24.798992, 33.99138)
+
+[node name="EmeraldDiagonal" type="Area2D" unique_id=1525291862]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1433330136]
+rotation = 0.7853982
+sprite_frames = SubResource("SpriteFrames_koit7")
+animation = &"Emerald"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1193775915]
+position = Vector2(5.2500005, -2.7144675)
+rotation = 0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_5y5nv")
