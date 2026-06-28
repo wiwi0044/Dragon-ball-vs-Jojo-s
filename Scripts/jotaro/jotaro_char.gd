@@ -5,12 +5,18 @@ extends CharacterBody2D
 @onready var hitbox_shape: CollisionShape2D = $Area2D/hitboxAtaque
 @onready var collision_body: CollisionShape2D = $CollisionShape2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var star_platinum: Node2D = $StarPlatinum
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 const DASH_SPEED = 800.0
 const DOUBLE_TAP_WINDOW := 1.0
 var inputs_desactivados: bool = false
+
+var tiempo_disparo_presionado: float = 0.0
+const TIEMPO_CARGA_AVDUL: float = 0.7
+var cargando_disparo: bool = false
+
 
 var attack_count := 0
 var attack_timer := 0.0
@@ -56,6 +62,8 @@ var colores_ki = [
 func _ready() -> void:
 	hitbox_area.body_entered.connect(_on_golpe_conectado)
 	sprite.play("Parado")
+	star_platinum.oponente = oponente
+	star_platinum.jotaro = self
 
 var tiempo_kaioken: float = 0.0
 
@@ -131,25 +139,49 @@ func _physics_process(delta: float) -> void:
 	if dash_timer_right <= 0:
 		dash_count_right = 0
 
-	# --- Ráfaga (cuesta 100 Ki) ---
+	# --- Disparo: Kakyoin rápido / Avdul mantenido ---
+	if Input.is_action_just_pressed("disparar" + sufijo) and not is_attacking and not is_stand_attacking and not is_dashing and is_on_floor():
+		cargando_disparo = true
+		tiempo_disparo_presionado = 0.0
+
+	if cargando_disparo:
+		tiempo_disparo_presionado += delta
+
+	if Input.is_action_just_released("disparar" + sufijo) and cargando_disparo:
+		cargando_disparo = false
+		if tiempo_disparo_presionado >= TIEMPO_CARGA_AVDUL:
+			if ki_actual >= 100:
+				ki_actual -= 100
+				is_stand_attacking = true
+				sprite.play("Llamar")
+				star_platinum.ejecutar_avdul()
+		else:
+			if ki_actual >= 15:
+				ki_actual -= 15
+				is_stand_attacking = true
+				sprite.play("Llamar")
+				star_platinum.ejecutar_kakyoin()
+
+	# --- Ráfaga de Star Platinum (especial1) ---
 	if Input.is_action_just_pressed("especial1" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
 		if ki_actual >= 100:
 			ki_actual -= 100
 			attack_count = 0
 			is_stand_attacking = true
 			sprite.play("Llamar")
-			hitbox_player.play("Rafaga")
+			star_platinum.ejecutar_rafaga()
 
-	# --- Uppercut (cuesta 50 Ki) ---
+	# --- Uppercut (golpe + arriba) ---
 	if Input.is_action_just_pressed("golpe" + sufijo) and Input.is_action_pressed("arriba" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
 		if ki_actual >= 50:
 			ki_actual -= 50
 			attack_count = 0
 			is_stand_attacking = true
 			sprite.play("Golpe")
+			hitbox_player.play("Golpe1")
 
 	# --- Combo de golpes ---
-	if Input.is_action_just_pressed("golpe" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking:
+	if Input.is_action_just_pressed("golpe" + sufijo) and not Input.is_action_pressed("arriba" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking:
 		attack_count += 1
 		attack_timer = DOUBLE_TAP_WINDOW
 		is_attacking = true
@@ -163,8 +195,8 @@ func _physics_process(delta: float) -> void:
 			attack_count = 0
 			is_attacking = false
 			is_stand_attacking = true
-			sprite.play("Golpe")
-			hitbox_player.play("Golpe1")
+			sprite.play("Llamar")
+			star_platinum.ejecutar_golpe()
 
 	if attack_timer <= 0:
 		attack_count = 0
@@ -174,6 +206,30 @@ func _physics_process(delta: float) -> void:
 
 	if is_stand_attacking and not sprite.is_playing():
 		is_stand_attacking = false
+
+	# --- Agarre de Star Platinum (patada) ---
+	if Input.is_action_just_pressed("patada" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
+		if ki_actual >= 50:
+			ki_actual -= 50
+			is_stand_attacking = true
+			sprite.play("Parado")
+			star_platinum.ejecutar_agarre()
+
+	# --- Ultimate (especial2) ---
+	if Input.is_action_just_pressed("especial2" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
+		if ki_actual >= 200:
+			ki_actual -= 200
+			is_stand_attacking = true
+			sprite.play("Parado")
+			star_platinum.ejecutar_ultimate()
+
+	# --- Bloqueo automático con cubrirse ---
+	if Input.is_action_just_pressed("cubrirse" + sufijo) and not is_attacking and not is_stand_attacking:
+		sprite.play("Cubrirse")
+		star_platinum.ejecutar_bloqueo()
+	if Input.is_action_just_released("cubrirse" + sufijo):
+		sprite.play("Parado")
+		star_platinum.detener_bloqueo()
 
 	# --- Aire ---
 	if not is_on_floor():
@@ -185,6 +241,7 @@ func _physics_process(delta: float) -> void:
 		is_attacking = false
 		is_stand_attacking = false
 		is_recharging = false
+		cargando_disparo = false
 
 	# --- Salto ---
 	if Input.is_action_just_pressed("arriba" + sufijo) and is_on_floor():
@@ -219,6 +276,9 @@ func _physics_process(delta: float) -> void:
 
 		hitbox_shape.position.x = abs(hitbox_shape.position.x) * dir_to_oponente
 		collision_body.position.x = abs(collision_body.position.x) * dir_to_oponente
+		star_platinum.position.x = abs(star_platinum.position.x) * dir_to_oponente
+		star_platinum.sprite.flip_h = dir_to_oponente < 0 
+		star_platinum.hitbox_shape.position.x = abs(star_platinum.hitbox_shape.position.x) * dir_to_oponente
 
 func golpear_oponente(cantidad: float) -> void:
 	if oponente and oponente.has_method("recibir_daño"):
@@ -273,6 +333,9 @@ func configurar(config: Dictionary) -> void:
 		barra_ki = config["barra_ki"]
 	if config.has("oponente"):
 		oponente = config["oponente"]
+	if config.has("oponente"):
+		oponente = config["oponente"]
+		star_platinum.oponente = oponente
 
 func _on_golpe_conectado(body: Node) -> void:
 	if body == oponente:

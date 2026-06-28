@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://c15dqi6sobyh8" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroPatada.png" id="11_t7x7t"]
 [ext_resource type="Texture2D" uid="uid://cxj2nwt8pkg4h" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroSaltando.png" id="12_yai4s"]
 [ext_resource type="Texture2D" uid="uid://r4anp2tuoy3x" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroVolando.png" id="13_sjbie"]
+[ext_resource type="PackedScene" uid="uid://sjii0q4urrjc" path="res://Scenes/personajes/jotario/StarPlatinum.tscn" id="15_oxp0x"]
 [ext_resource type="Texture2D" uid="uid://dnlrrx3ahmw61" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroDerrota.png" id="38_vnfjw"]
 [ext_resource type="Texture2D" uid="uid://bu71vinr2apfn" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroLlamar.png" id="42_tiv02"]
 
@@ -656,6 +657,8 @@ _data = {
 [node name="Jotaro" type="CharacterBody2D" unique_id=682881621]
 scale = Vector2(2, 2)
 script = ExtResource("1_i1aow")
+
+[node name="StarPlatinum" parent="." unique_id=702933953 instance=ExtResource("15_oxp0x")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=487078544]
 sprite_frames = SubResource("SpriteFrames_2n44k")
