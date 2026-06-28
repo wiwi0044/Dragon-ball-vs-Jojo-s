@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://d0woi40rddarf"]
+
+[ext_resource type="Texture2D" uid="uid://dn7xli0macqja" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando1.png" id="1_p2ps4"]
+[ext_resource type="Texture2D" uid="uid://cs0mnwy6nn85u" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando2.png" id="2_tfpkq"]
+[ext_resource type="Texture2D" uid="uid://7fx0jpjp8h63" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando3.png" id="3_weydc"]
+[ext_resource type="Texture2D" uid="uid://ducllnpnyqbjn" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando4.png" id="4_vqwgg"]
+[ext_resource type="Texture2D" uid="uid://bhkkga01iefl5" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando5.png" id="5_tipg2"]
+[ext_resource type="Texture2D" uid="uid://bo1k7wr00irqg" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando6.png" id="6_ff4h7"]
+[ext_resource type="Texture2D" uid="uid://uhjwnnchbyt7" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando7.png" id="7_ap5tx"]
+[ext_resource type="Texture2D" uid="uid://cgrsvb20k4lgb" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroCaminando8.png" id="8_l133p"]
+[ext_resource type="Texture2D" uid="uid://cgqpfueklx7aj" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroQuieto1.png" id="9_5ceg3"]
+[ext_resource type="Texture2D" uid="uid://ija1ci80i5p5" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroQuieto2.png" id="10_67yh8"]
+[ext_resource type="Texture2D" uid="uid://cavpyxxgo5gdg" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroQuieto3.png" id="11_f6sna"]
+[ext_resource type="Texture2D" uid="uid://cuny55yeehgt7" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroQuieto4.png" id="12_de0vk"]
+[ext_resource type="Texture2D" uid="uid://768pyyxuqlys" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroQuieto5.png" id="13_3n0ui"]
+[ext_resource type="Texture2D" uid="uid://1fqowln7q3he" path="res://Assets/Luchadores/jotaro/jotaroSprites/JotaroQuieto6.png" id="14_2u4ug"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rjyqm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_p2ps4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_tfpkq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_weydc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vqwgg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tipg2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ff4h7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ap5tx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_l133p")
+}],
+"loop": true,
+"name": &"adelante",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_p2ps4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_tfpkq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_weydc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vqwgg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tipg2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ff4h7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ap5tx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_l133p")
+}],
+"loop": true,
+"name": &"atras",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_5ceg3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_67yh8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_f6sna")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_de0vk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_3n0ui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_2u4ug")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8gw6n"]
+size = Vector2(20, 57.333336)
+
+[node name="Jotaro" type="CharacterBody2D" unique_id=1699438834]
+scale = Vector2(1.5, 1.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1333749581]
+sprite_frames = SubResource("SpriteFrames_rjyqm")
+animation = &"atras"
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="AnimatedSprite2D" unique_id=1445737740]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=466000705]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=322334325]
+position = Vector2(0, 1.3333334)
+shape = SubResource("RectangleShape2D_8gw6n")
+
+[node name="PuntoDisparo" type="Marker2D" parent="." unique_id=1769467621]
+
+[node name="AnclaHitbox" type="Marker2D" parent="." unique_id=504236040]
+
+[node name="HitboxAtaque" type="Area2D" parent="." unique_id=1605142746]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxAtaque" unique_id=336181051]

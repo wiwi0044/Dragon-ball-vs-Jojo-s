@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bh5pfbgqbqbig"]
+
+[ext_resource type="Texture2D" path="res://Assets/Luchadores/jotaro/Cruseaders/Avdul.png" id="1_76jij"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sild"]
+atlas = ExtResource("1_76jij")
+region = Rect2(192, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3py3f"]
+atlas = ExtResource("1_76jij")
+region = Rect2(256, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vre3u"]
+atlas = ExtResource("1_76jij")
+region = Rect2(320, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hgij3"]
+atlas = ExtResource("1_76jij")
+region = Rect2(384, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wts4t"]
+atlas = ExtResource("1_76jij")
+region = Rect2(448, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgisg"]
+atlas = ExtResource("1_76jij")
+region = Rect2(512, 0, 64, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uq1iy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sild")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3py3f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vre3u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hgij3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wts4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgisg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 11.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25hd7"]
+size = Vector2(35, 70)
+
+[node name="MagiciansRed" type="Area2D" unique_id=1563881097]
+scale = Vector2(1.5, 1.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1288562051]
+sprite_frames = SubResource("SpriteFrames_uq1iy")
+frame_progress = 0.018764805
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=66344761]
+position = Vector2(4.5, 1)
+shape = SubResource("RectangleShape2D_25hd7")
