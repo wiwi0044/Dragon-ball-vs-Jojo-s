@@ -879,6 +879,7 @@ height = 76.0
 radius = 9.219544
 
 [node name="personaje" type="CharacterBody2D" unique_id=109985502]
+z_index = 2
 position = Vector2(290, 231)
 collision_layer = 0
 collision_mask = 0

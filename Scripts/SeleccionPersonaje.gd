@@ -126,7 +126,7 @@ func _resaltar() -> void:
 			estilo.border_color = Color(1, 1, 0, 1)
 			estilo.set_border_width_all(5)
 		elif i == cursor_j1:
-			estilo.border_color = Color(0, 0.8, 1, 1) if confirmado_j1 else Color(0.2, 0.5, 1, 1)
+			estilo.border_color = Color(0.0, 0.027, 1.0, 1.0) if confirmado_j1 else Color(0.2, 0.5, 1, 1)
 			estilo.set_border_width_all(5)
 		elif i == cursor_j2:
 			estilo.border_color = Color(1, 0.5, 0, 1) if confirmado_j2 else Color(1, 0.2, 0.2, 1)
