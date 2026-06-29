@@ -49,9 +49,18 @@ size = Vector2(1160, 94.5)
 script = ExtResource("1_xxw0l")
 
 [node name="Fondo" type="TextureRect" parent="." unique_id=6296466]
+offset_left = -19.0
 offset_right = 1155.0
-offset_bottom = 615.0
+offset_bottom = 660.0
 expand_mode = 2
+
+[node name="CanvasLayer3" type="CanvasLayer" parent="." unique_id=1218595463]
+
+[node name="FondoRojo" type="ColorRect" parent="CanvasLayer3" unique_id=681719127]
+modulate = Color(1, 1, 1, 0)
+offset_right = 1178.0
+offset_bottom = 659.0
+color = Color(0.4230604, 1.4078245e-06, 0.0030690813, 1)
 
 [node name="SpawnJ1" type="Marker2D" parent="." unique_id=496697367]
 position = Vector2(100, 525)
@@ -173,3 +182,6 @@ shape = SubResource("RectangleShape2D_tuup3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LimitesEscena/suelo" unique_id=1252005928]
 position = Vector2(579, 595.25)
 shape = SubResource("RectangleShape2D_bsjpd")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1073914879]
+position = Vector2(569, 331)

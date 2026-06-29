@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 enum Estado { INTRO, IDLE, ADELANTE, ATRAS, VOLAR, BAJAR, RAPIDO_ADELANTE, RAPIDO_ATRAS, RAPIDO_VOLAR, RAPIDO_BAJAR, GOLPE1, GOLPE2, GOLPE3
 , PATADA1, PATADA2, RECARGAR, CUBRIRSE, DERROTADO, GOLPEADO, MUY_GOLPEADO, RAFAGA1, RAFAGA2, RAFAGA3, KAMEHAMEHA_CARGA, KAMEHAMEHA_DISPARO
-, KIENZAN_CARGA, KIENZAN_DISPARO, TAIOKEN, KAIOKEN, KAMEHAMEHA_CHOQUE }
+, KIENZAN_CARGA, KIENZAN_DISPARO, TAIOKEN, KAIOKEN, KAMEHAMEHA_CHOQUE}
 var estado_actual: Estado = Estado.INTRO
 var estado_previo: Estado = Estado.IDLE
 var sufijo: String = "J1"
@@ -116,7 +116,13 @@ func _physics_process(delta: float) -> void:
 	if cargando_ki:
 		tiempo_ki_presionado += delta
 		if tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA and estado_actual != Estado.KAMEHAMEHA_CARGA:
-			cambiar_estado(Estado.KAMEHAMEHA_CARGA)
+			if ki_actual >= 100:
+				cambiar_estado(Estado.KAMEHAMEHA_CARGA)
+				
+	if estado_actual == Estado.KAMEHAMEHA_CHOQUE:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
 
 	var dir := Vector2(
 		Input.get_axis("izquierda" + sufijo, "derecha" + sufijo),
@@ -128,16 +134,17 @@ func _physics_process(delta: float) -> void:
 	if estado_actual == Estado.RECARGAR:
 		ki_actual = min(ki_actual + velocidad_recarga * delta, ki_maximo)
 
-	if not inputs_desactivados and estado_actual not in [Estado.DERROTADO, Estado.INTRO, Estado.KAMEHAMEHA_DISPARO, Estado.RECARGAR]:
+	if not inputs_desactivados and estado_actual not in [Estado.DERROTADO, Estado.INTRO, Estado.KAMEHAMEHA_DISPARO, Estado.RECARGAR, Estado.KAMEHAMEHA_CHOQUE]:
 		if Input.is_action_just_pressed("disparar" + sufijo):
 			cargando_ki = true
 			tiempo_ki_presionado = 0.0
 		if Input.is_action_just_released("disparar" + sufijo) and cargando_ki:
-			if estado_actual != Estado.KAMEHAMEHA_CARGA:  # agrega este check
-				if ki_actual >= 100 and tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA:
-					cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
-				elif ki_actual >= 15:
-					_lanzar_rafaga()
+			if estado_actual == Estado.KAMEHAMEHA_CARGA:
+				cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
+			elif ki_actual >= 100 and tiempo_ki_presionado >= TIEMPO_CARGA_KAMEHAMEHA:
+				cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
+			elif ki_actual >= 15:
+				_lanzar_rafaga()
 			cargando_ki = false
 			tiempo_ki_presionado = 0.0
 
@@ -152,32 +159,29 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if inputs_desactivados:
 		return	
-	
 	if estado_actual == Estado.DERROTADO:
 		return
 	if estado_actual == Estado.INTRO:
 		return
-	
 	if estado_actual == Estado.KAMEHAMEHA_CARGA:
-		return	
-		
-		
-	if Input.is_action_just_pressed("recargar" + sufijo):
-		cambiar_estado(Estado.RECARGAR)
-	if Input.is_action_just_released("recargar" + sufijo):
-		cambiar_estado(Estado.IDLE)
-	if estado_actual == Estado.RECARGAR:
-		return	
-	
+		return
 	if estado_actual == Estado.KAMEHAMEHA_DISPARO:
 		return
-		
+
+	# Bloquea TODO durante el choque excepto agregar poder
 	if estado_actual == Estado.KAMEHAMEHA_CHOQUE:
 		if Input.is_action_just_pressed("disparar" + sufijo):
 			for hijo in get_parent().get_children():
 				if hijo.has_method("agregar_poder") and hijo.get("en_choque") and hijo.get("dueño") == self:
 					hijo.agregar_poder(50)
 					break
+		return
+
+	if Input.is_action_just_pressed("recargar" + sufijo):
+		cambiar_estado(Estado.RECARGAR)
+	if Input.is_action_just_released("recargar" + sufijo):
+		cambiar_estado(Estado.IDLE)
+	if estado_actual == Estado.RECARGAR:
 		return
 
 	_detectar_doble_tap("izquierda" + sufijo)
@@ -291,6 +295,14 @@ func cambiar_estado(nuevo_estado: Estado) -> void:
 			sprite.play("muyGolpeado")
 		Estado.DERROTADO:
 			sprite.play("derrotado")
+			hitbox_shape.set_deferred("disabled", true)
+			if oponente and oponente.has_method("desactivar_inputs"):
+				oponente.desactivar_inputs()
+			if oponente and oponente.has_method("play_victoria"):
+				oponente.play_victoria()
+			var pelea = get_parent()
+			if pelea and pelea.has_method("efecto_victoria"):
+				pelea.efecto_victoria(oponente)
 		Estado.RAFAGA1:
 			sprite.play("rafaga1")
 			var dir_x := -1.0 if sprite.flip_h else 1.0
@@ -417,6 +429,8 @@ func actualizar_estado(dir: Vector2) -> void:
 func orientar_a_oponente() -> void:
 	if oponente == null:
 		return
+	if estado_actual == Estado.KAMEHAMEHA_CHOQUE:
+		return
 	sprite.flip_h = oponente.global_position.x < global_position.x
 	sprite.rotation = 0.0
 
@@ -526,13 +540,8 @@ func _on_animation_finished() -> void:
 	elif estado_actual == Estado.MUY_GOLPEADO:
 		cambiar_estado(Estado.IDLE)
 	elif estado_actual == Estado.DERROTADO:
-		if oponente and oponente.has_method("desactivar_inputs"):
-			oponente.desactivar_inputs()
 		sprite.pause()
 		sprite.frame = sprite.sprite_frames.get_frame_count("derrotado") - 1
-		hitbox_shape.disabled = true
-		await get_tree().create_timer(0.1).timeout
-		get_tree().paused = true
 	elif estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2, Estado.RAFAGA3]:
 		cambiar_estado(Estado.IDLE)
 	elif estado_actual == Estado.KAMEHAMEHA_DISPARO:
@@ -545,7 +554,8 @@ func _on_animation_finished() -> void:
 			oponente.activar_inputs()
 		cambiar_estado(Estado.IDLE)
 	elif estado_actual == Estado.KAMEHAMEHA_CARGA:
-		cambiar_estado(Estado.KAMEHAMEHA_DISPARO)
+		sprite.pause()
+		sprite.frame = sprite.sprite_frames.get_frame_count("kamehameha_carga") - 1
 
 func ajustar_colision(pos: Vector2) -> void:
 	colision.position = pos
@@ -776,7 +786,7 @@ func _disparar_kamehameha() -> void:
 	var area = k.get_node("Area2D")
 	if area:
 		area.collision_layer = mi_layer | 16
-		area.collision_mask = mi_mask | 16
+		area.collision_mask = mi_mask | 16 | 32
 	var dir_x := -1.0 if sprite.flip_h else 1.0
 	k.inicializar(oponente.global_position, dir_x, daño, self)
 	
@@ -816,8 +826,10 @@ func _activar_destello_taioken() -> void:
 	tween.tween_property(fondo_blanco, "modulate:a", 0.0, 2.0)
 	
 func entrar_choque_kamehameha() -> void:
+	cargando_ki = false
+	tiempo_ki_presionado = 0.0
 	cambiar_estado(Estado.KAMEHAMEHA_CHOQUE)
-
+	
 func salir_choque_kamehameha() -> void:
 	cambiar_estado(Estado.IDLE)
 	
@@ -844,3 +856,6 @@ func configurar(config: Dictionary) -> void:
 		mi_layer = config["layer"]
 	if config.has("mask"):
 		mi_mask = config["mask"]
+	
+func play_victoria() -> void:
+	sprite.play("victoria")

@@ -1,11 +1,10 @@
 class_name PersonajeBaseDBZ
 extends CharacterBody2D
 
-@onready var ancla_hitbox: Marker2D = $AnclaHitbox
 enum Estado { INTRO, IDLE, ADELANTE, ATRAS, VOLAR, BAJAR, 
 	RAPIDO_ADELANTE, RAPIDO_ATRAS, RAPIDO_VOLAR, RAPIDO_BAJAR,
-	GOLPE1, GOLPE2, GOLPE3, PATADA1, PATADA2,
-	RECARGAR, CUBRIRSE, DERROTADO, GOLPEADO, MUY_GOLPEADO }
+	GOLPE1, GOLPE2, GOLPE3, PATADA1, PATADA2, RAFAGA1, RAFAGA2,
+	RECARGAR, CUBRIRSE, DERROTADO, GOLPEADO, MUY_GOLPEADO, LASER, BOLA_GIGANTE, CHOQUE}
 
 var estado_actual: Estado = Estado.INTRO
 var estado_previo: Estado = Estado.IDLE
@@ -46,7 +45,7 @@ var colores_ki = [
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var hitbox: Area2D = $HitboxAtaque
 @onready var hitbox_shape: CollisionShape2D = $HitboxAtaque/CollisionShape2D
-@onready var punto_disparo: Marker2D = $PuntoDisparo
+@onready var punto_disparo: Marker2D = $AnimatedSprite2D/PuntoDisparo
 
 @export var oponente: Node2D
 @export var fondo_blanco: ColorRect
@@ -196,7 +195,17 @@ func _on_cambiar_estado(nuevo_estado: Estado) -> void:
 		Estado.CUBRIRSE: sprite.play("cubrirse")
 		Estado.GOLPEADO: sprite.play("golpeado")
 		Estado.MUY_GOLPEADO: sprite.play("muyGolpeado")
-		Estado.DERROTADO: sprite.play("derrotado")
+		Estado.DERROTADO:
+			sprite.play("derrotado")
+			hitbox_shape.set_deferred("disabled", true)
+			if oponente and oponente.has_method("desactivar_inputs"):
+				oponente.desactivar_inputs()
+			var pelea = get_parent()
+			if pelea and pelea.has_method("efecto_victoria"):
+				pelea.efecto_victoria(oponente)
+			if oponente and oponente.has_method("play_victoria"):
+				oponente.play_victoria()
+				
 
 func procesar_movimiento(dir: Vector2, delta: float) -> void:
 	if estado_actual == Estado.INTRO:
@@ -216,8 +225,14 @@ func procesar_movimiento(dir: Vector2, delta: float) -> void:
 			velocity.y += 980 * delta
 		velocity.x = move_toward(velocity.x, 0, friccion * delta)
 		return
-	if estado_actual in [Estado.GOLPE1, Estado.GOLPE2, Estado.GOLPE3, Estado.PATADA1, Estado.PATADA2]:
+	if estado_actual in [Estado.GOLPE1, Estado.GOLPE2, Estado.GOLPE3, Estado.PATADA1, Estado.PATADA2, Estado.RAFAGA1, Estado.RAFAGA2, Estado.LASER, Estado.BOLA_GIGANTE]:
 		velocity = Vector2.ZERO
+		return
+	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2]:
+		velocity = Vector2.ZERO
+		return
+	if estado_actual == Estado.CHOQUE:
+		velocity= Vector2.ZERO
 		return
 
 func actualizar_estado(dir: Vector2) -> void:
@@ -232,6 +247,10 @@ func actualizar_estado(dir: Vector2) -> void:
 	if estado_actual in [Estado.RECARGAR, Estado.CUBRIRSE]:
 		return
 	if estado_actual in [Estado.GOLPEADO, Estado.MUY_GOLPEADO, Estado.DERROTADO]:
+		return
+	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2, Estado.LASER, Estado.BOLA_GIGANTE]:
+		return
+	if estado_actual == Estado.CHOQUE:
 		return
 
 	var hacia_oponente: float = 0.0
@@ -316,8 +335,12 @@ func _on_animation_finished() -> void:
 			sprite.pause()
 			sprite.frame = sprite.sprite_frames.get_frame_count("derrotado") - 1
 			hitbox_shape.disabled = true
-			await get_tree().create_timer(0.1).timeout
-			get_tree().paused = true
+		Estado.RAFAGA1, Estado.RAFAGA2:
+			cambiar_estado(Estado.IDLE)
+			if estado_actual == Estado.DERROTADO:
+				sprite.pause()
+				sprite.frame = sprite.sprite_frames.get_frame_count("derrotado") - 1
+				hitbox_shape.set_deferred("disabled", true)
 
 func _registrar_golpe() -> void:
 	if estado_actual not in [Estado.GOLPE1, Estado.GOLPE2, Estado.GOLPE3]:
@@ -427,3 +450,6 @@ func configurar(config: Dictionary) -> void:
 		mi_layer = config["layer"]
 	if config.has("mask"):
 		mi_mask = config["mask"]
+
+func play_victoria() -> void:
+	sprite.play("victoria")

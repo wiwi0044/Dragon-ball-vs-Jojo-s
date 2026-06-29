@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cnxdap552lyb6"]
+
+[ext_resource type="Script" uid="uid://cmqwnwmi8vm5l" path="res://Scripts/freezer/laser.gd" id="1_nr63w"]
+
+[node name="Laser" type="Node2D" unique_id=1635331737]
+position = Vector2(-5, 0)
+script = ExtResource("1_nr63w")
+
+[node name="LineaBorde" type="Line2D" parent="." unique_id=1512166685]
+texture_filter = 1
+points = PackedVector2Array(-1, 0)
+
+[node name="Linea" type="Line2D" parent="." unique_id=2055507536]
+position = Vector2(0, -1)

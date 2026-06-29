@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://co65jcvmg0qf" path="res://Assets/Luchadores/goku/base/genkidama.png" id="11_444y6"]
 [ext_resource type="Texture2D" uid="uid://dhinbgoylvbro" path="res://Assets/Luchadores/goku/base/destello.png" id="14_mvla4"]
 [ext_resource type="Texture2D" uid="uid://bf4lvj2lwqnke" path="res://Assets/Luchadores/goku/base/genkidamaSayan.png" id="16_l0xoo"]
+[ext_resource type="Texture2D" uid="uid://bpq30g0n67iph" path="res://Assets/Luchadores/goku/base/victoria.png" id="18_njpml"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5vmsb"]
 atlas = ExtResource("2_ith2g")
@@ -402,6 +403,34 @@ region = Rect2(336, 0, 112, 64)
 atlas = ExtResource("14_mvla4")
 region = Rect2(448, 0, 112, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogv5q"]
+atlas = ExtResource("18_njpml")
+region = Rect2(0, 0, 112, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eg5sg"]
+atlas = ExtResource("18_njpml")
+region = Rect2(112, 0, 112, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qk5bk"]
+atlas = ExtResource("18_njpml")
+region = Rect2(224, 0, 112, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0r6n"]
+atlas = ExtResource("18_njpml")
+region = Rect2(336, 0, 112, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ym20q"]
+atlas = ExtResource("18_njpml")
+region = Rect2(448, 0, 112, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s736l"]
+atlas = ExtResource("18_njpml")
+region = Rect2(560, 0, 112, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq3bu"]
+atlas = ExtResource("18_njpml")
+region = Rect2(672, 0, 112, 96)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_gtbxx"]
 atlas = ExtResource("2_ith2g")
 region = Rect2(96, 0, 48, 64)
@@ -463,7 +492,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"derrotado",
-"speed": 3.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -668,7 +697,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"muyGolpeado",
-"speed": 3.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -851,6 +880,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ogv5q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eg5sg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qk5bk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0r6n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ym20q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s736l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mq3bu")
+}],
+"loop": true,
+"name": &"victoria",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_gtbxx")
 }],
 "loop": true,
@@ -876,7 +931,7 @@ texture_filter = 1
 position = Vector2(-23, -16)
 scale = Vector2(2.125, 2)
 sprite_frames = SubResource("SpriteFrames_t1ee5")
-animation = &"golpe2"
+animation = &"victoria"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1572064627]
 position = Vector2(-21, 5)

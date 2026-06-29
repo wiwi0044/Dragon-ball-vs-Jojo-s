@@ -1,4 +1,7 @@
 extends Node2D
+@onready var camara: Camera2D = $Camera2D
+@onready var fondo_rojo: ColorRect = $CanvasLayer3/FondoRojo
+var efecto_activo: bool = false
 
 var escenas_personajes = {
 	"goku": preload("res://Scenes/personajes/goku/base/Personaje.tscn"),
@@ -16,7 +19,7 @@ var fondos = {
 @onready var spawn_j2: Marker2D = $SpawnJ2
 
 func _ready() -> void:
-		
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	for limite in $LimitesEscena.get_children():
 		limite.collision_layer = 4
 		limite.collision_mask = 0
@@ -66,3 +69,67 @@ func _configurar_hitbox(nodo: Node, layer: int, mask: int) -> void:
 			hijo.collision_layer = layer
 			hijo.collision_mask = mask
 		_configurar_hitbox(hijo, layer, mask)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and efecto_activo:
+		Engine.time_scale = 1.0
+		get_tree().paused = false
+		get_tree().change_scene_to_file("res://Scenes/SeleccionPersonaje.tscn")
+
+func efecto_victoria(ganador: Node) -> void:
+	if efecto_activo:
+		return
+	efecto_activo = true
+	
+	Engine.time_scale = 0.3
+	
+	fondo_rojo.modulate.a = 0.0
+	var tween_parpadeo = create_tween()
+	tween_parpadeo.set_loops(4)
+	tween_parpadeo.tween_property(fondo_rojo, "modulate:a", 0.5, 0.2)
+	tween_parpadeo.tween_property(fondo_rojo, "modulate:a", 0.0, 0.2)
+	
+	await get_tree().create_timer(2.0).timeout
+	
+	fondo_rojo.modulate.a = 0.0
+	Engine.time_scale = 1.0
+	
+	var tween_camara = create_tween()
+	tween_camara.tween_property(camara, "position", ganador.global_position, 0.8)
+	tween_camara.parallel().tween_property(camara, "zoom", Vector2(2.5, 2.5), 0.8)
+	
+	await get_tree().create_timer(0.8).timeout
+	
+	var fuente = load("res://Scenes/8-bit Arcade In.ttf")
+	var canvas = CanvasLayer.new()
+	canvas.layer = 10
+	add_child(canvas)
+	
+	var label_winner = Label.new()
+	label_winner.text = "WINNER"
+	label_winner.add_theme_font_override("font", fuente)
+	label_winner.add_theme_font_size_override("font_size", 120)
+	label_winner.add_theme_color_override("font_color", Color.YELLOW)
+	label_winner.add_theme_color_override("font_shadow_color", Color.BLACK)
+	label_winner.add_theme_constant_override("shadow_offset_x", 4)
+	label_winner.add_theme_constant_override("shadow_offset_y", 4)
+	label_winner.set_anchors_preset(Control.PRESET_CENTER)
+	label_winner.position.y -= 170
+	label_winner.position.x -= 100
+	canvas.add_child(label_winner)
+	
+	var label_esc = Label.new()
+	label_esc.text = "ESC para salir"
+	label_esc.add_theme_font_override("font", fuente)
+	label_esc.add_theme_font_size_override("font_size", 30)
+	label_esc.add_theme_color_override("font_color", Color.WHITE)
+	label_esc.add_theme_color_override("font_shadow_color", Color.BLACK)
+	label_esc.add_theme_constant_override("shadow_offset_x", 2)
+	label_esc.add_theme_constant_override("shadow_offset_y", 2)
+	label_esc.set_anchors_preset(Control.PRESET_CENTER)
+	label_esc.position.y += 200
+	label_esc.position.x -= 100
+	canvas.add_child(label_esc)
+	
+	await get_tree().create_timer(1.5).timeout
+	get_tree().paused = true

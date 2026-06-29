@@ -150,6 +150,10 @@ salir={
 
 2d_physics/layer_1="goku"
 2d_physics/layer_2="oponente"
+2d_physics/layer_3="limites"
+2d_physics/layer_4="hitbox"
+2d_physics/layer_5="proyectil_j1"
+2d_physics/layer_6="proyectil_j2"
 
 [physics]
 
