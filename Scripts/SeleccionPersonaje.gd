@@ -1,4 +1,5 @@
 extends Control
+@onready var musica: AudioStreamPlayer = $Musica
 
 var personajes = [
 	{"nombre": "goku", "icono": "res://Assets/Luchadores/goku/icono.png", "preview": "res://Assets/Luchadores/goku/preview.png"},
@@ -37,6 +38,8 @@ var iconos: Array = []
 var paneles: Array = []
 
 func _ready() -> void:
+	musica.stream = preload("res://Assets/Luchadores/goku/sonidos/8Bits_DbzOpening.mp3")
+	musica.play()
 	boton_comenzar.disabled = true
 	iconos = [icono_goku, icono_jotaro, icono_freezer]
 	paneles = [panel_goku, panel_jotaro, panel_freezer]

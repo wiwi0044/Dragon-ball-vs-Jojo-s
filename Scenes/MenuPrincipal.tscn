@@ -47,5 +47,8 @@ theme_override_fonts/font = ExtResource("2_wvohi")
 theme_override_font_sizes/font_size = 32
 text = "Salir"
 
+[node name="Musica" type="AudioStreamPlayer" parent="." unique_id=633743270]
+volume_db = -10.0
+
 [connection signal="pressed" from="VBoxContainer/Jugar" to="." method="_on_jugar_pressed"]
 [connection signal="pressed" from="VBoxContainer/Salir" to="." method="_on_salir_pressed"]

@@ -185,3 +185,9 @@ shape = SubResource("RectangleShape2D_bsjpd")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1073914879]
 position = Vector2(569, 331)
+
+[node name="AudioChoque" type="AudioStreamPlayer" parent="." unique_id=703346281]
+
+[node name="AudioChoqueBucle" type="AudioStreamPlayer" parent="." unique_id=1081553656]
+
+[node name="Musica" type="AudioStreamPlayer" parent="." unique_id=1157139153]

@@ -2,6 +2,9 @@ extends Node2D
 @onready var camara: Camera2D = $Camera2D
 @onready var fondo_rojo: ColorRect = $CanvasLayer3/FondoRojo
 var efecto_activo: bool = false
+@onready var audio_choque: AudioStreamPlayer = $AudioChoque
+@onready var audio_choque_bucle: AudioStreamPlayer = $AudioChoqueBucle
+@onready var musica: AudioStreamPlayer = $Musica
 
 var escenas_personajes = {
 	"goku": preload("res://Scenes/personajes/goku/base/Personaje.tscn"),
@@ -19,6 +22,8 @@ var fondos = {
 @onready var spawn_j2: Marker2D = $SpawnJ2
 
 func _ready() -> void:
+	musica.stream = preload("res://Assets/Luchadores/goku/sonidos/17. The Tragic Battle.mp3")
+	musica.play()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	for limite in $LimitesEscena.get_children():
 		limite.collision_layer = 4
@@ -138,6 +143,10 @@ func efecto_victoria(ganador: Node) -> void:
 var temblando: bool = false
 
 func iniciar_temblor(intensidad: float = 5.0) -> void:
+	audio_choque.stream = preload("res://Assets/Luchadores/goku/sonidos/choque.wav")
+	audio_choque.play()
+	audio_choque_bucle.stream = preload("res://Assets/Luchadores/goku/sonidos/choqueBucle.wav")
+	audio_choque_bucle.play()
 	if temblando:
 		return
 	temblando = true
@@ -153,3 +162,4 @@ func iniciar_temblor(intensidad: float = 5.0) -> void:
 
 func detener_temblor() -> void:
 	temblando = false
+	audio_choque_bucle.stop()
