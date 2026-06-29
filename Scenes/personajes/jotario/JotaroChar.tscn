@@ -1037,7 +1037,7 @@ size = Vector2(22.25, 56.5)
 radius = 4.609772
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wi2jw"]
-size = Vector2(30, 14)
+size = Vector2(63.5, 14)
 
 [sub_resource type="Animation" id="Animation_qwtj6"]
 resource_name = "Golpe1"
@@ -1229,6 +1229,63 @@ tracks/8/keys = {
 "values": [Vector2(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_h5mk2"]
+resource_name = "Ultimate"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sjbie"]
+radius = 14.035668
+
+[sub_resource type="Animation" id="Animation_g6yqr"]
+resource_name = "agarre"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Area2D2/hitboxAtaqueStand:shape")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("CircleShape2D_sjbie")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D2/hitboxAtaqueStand:shape:radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [27.540878]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area2D2/hitboxAtaqueStand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(63.5, 4)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Area2D2/hitboxAtaqueStand:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_heo6x"]
 radius = 22.051077
 
@@ -1367,6 +1424,8 @@ _data = {
 &"Golpe1": SubResource("Animation_qwtj6"),
 &"Patada1": SubResource("Animation_sjbie"),
 &"RESET": SubResource("Animation_pdkho"),
+&"Ultimate": SubResource("Animation_h5mk2"),
+&"agarre": SubResource("Animation_g6yqr"),
 &"golpe": SubResource("Animation_stsay"),
 &"rafaga": SubResource("Animation_uwaa5")
 }
@@ -1379,8 +1438,8 @@ script = ExtResource("1_i1aow")
 visible = false
 position = Vector2(43, -18.5)
 sprite_frames = SubResource("SpriteFrames_x3x1n")
-animation = &"rafaga"
-frame = 1
+animation = &"agarre"
+frame = 6
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=487078544]
 sprite_frames = SubResource("SpriteFrames_2n44k")

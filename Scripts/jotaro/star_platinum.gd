@@ -39,6 +39,7 @@ func ejecutar_agarre() -> void:
 	sprite.visible = true
 	sprite.flip_h = oponente.global_position.x < global_position.x
 	sprite.play("agarre")
+	
 
 func ejecutar_bloqueo() -> void:
 	if oponente == null:

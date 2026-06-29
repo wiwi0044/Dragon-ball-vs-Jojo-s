@@ -236,6 +236,9 @@ func _physics_process(delta: float) -> void:
 			is_stand_attacking = true
 			sprite.play("Parado")
 			star_platinum.ejecutar_agarre()
+			hitbox_player.play("agarre")
+			hitbox_shape.disabled = true
+			timer.start(0.5)
 
 	# --- Ultimate (especial2) ---
 	if Input.is_action_just_pressed("especial2" + sufijo) and is_on_floor() and not is_dashing and not is_stand_attacking and not is_attacking:
@@ -435,6 +438,7 @@ func _on_animation_finished() -> void:
 		sprite.pause()
 		sprite.frame = sprite.sprite_frames.get_frame_count("Derrota") - 1
 		desactivar_inputs()
+		
 
 func _on_timer_timeout() -> void:
 	hitbox_shape2.disabled = false
