@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://ne5j8halt3ld"]
+
+[ext_resource type="Texture2D" uid="uid://cesfuubl6r850" path="res://Assets/Luchadores/jotaro/Cruseaders/Kakyoin.png" id="1_3xjqt"]
+[ext_resource type="Script" uid="uid://b6looki3m1wp8" path="res://Scripts/jotaro/emerald_diagonal.gd" id="1_jmn3g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5y5nv"]
+size = Vector2(24.798992, 34.64824)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xjqt"]
+atlas = ExtResource("1_3xjqt")
+region = Rect2(1120, 0, 112, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_koit7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xjqt")
+}],
+"loop": true,
+"name": &"Emerald",
+"speed": 5.0
+}]
+
+[node name="EmeraldDiagonal" type="Area2D" unique_id=1525291862]
+script = ExtResource("1_jmn3g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1193775915]
+position = Vector2(-1.7499998, 1.7499998)
+rotation = 0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_5y5nv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1433330136]
+position = Vector2(14.000001, -9.000001)
+rotation = 0.7853982
+sprite_frames = SubResource("SpriteFrames_koit7")
+animation = &"Emerald"
+frame_progress = 0.47408956

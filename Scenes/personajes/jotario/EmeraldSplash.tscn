@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dg0voqc007gd"]
+
+[ext_resource type="Script" uid="uid://dsprga5jcic1w" path="res://Scripts/jotaro/emerald_splash.gd" id="1_k4yrv"]
+[ext_resource type="Texture2D" uid="uid://cesfuubl6r850" path="res://Assets/Luchadores/jotaro/Cruseaders/Kakyoin.png" id="1_vs5s4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tg1qr"]
+size = Vector2(25, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2lgsd"]
+atlas = ExtResource("1_vs5s4")
+region = Rect2(1120, 0, 112, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d3tuh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2lgsd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EmeraldSplash" type="Area2D" unique_id=1336935739]
+script = ExtResource("1_k4yrv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=602590006]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_tg1qr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1195335288]
+position = Vector2(5, -16)
+sprite_frames = SubResource("SpriteFrames_d3tuh")

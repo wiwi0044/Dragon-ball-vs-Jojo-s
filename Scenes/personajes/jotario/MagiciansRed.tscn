@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://bh5pfbgqbqbig"]
+
+[ext_resource type="Texture2D" uid="uid://fnuhwnetg5jx" path="res://Assets/Luchadores/jotaro/Cruseaders/Avdul.png" id="1_76jij"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kt7fd"]
+atlas = ExtResource("1_76jij")
+region = Rect2(336, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t3r3r"]
+atlas = ExtResource("1_76jij")
+region = Rect2(448, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5wjm"]
+atlas = ExtResource("1_76jij")
+region = Rect2(560, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tsc38"]
+atlas = ExtResource("1_76jij")
+region = Rect2(672, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmq60"]
+atlas = ExtResource("1_76jij")
+region = Rect2(784, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vljeb"]
+atlas = ExtResource("1_76jij")
+region = Rect2(896, 0, 112, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uq1iy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kt7fd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t3r3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5wjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tsc38")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rmq60")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vljeb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 11.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25hd7"]
+size = Vector2(35, 70)
+
+[node name="MagiciansRed" type="Area2D" unique_id=1563881097]
+scale = Vector2(1.5, 1.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1288562051]
+position = Vector2(-2, 0)
+sprite_frames = SubResource("SpriteFrames_uq1iy")
+frame_progress = 0.12969309
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=66344761]
+position = Vector2(4.5, 1)
+shape = SubResource("RectangleShape2D_25hd7")

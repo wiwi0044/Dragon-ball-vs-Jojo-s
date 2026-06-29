@@ -727,7 +727,7 @@ func _on_golpe_conectado(body: Node) -> void:
 			elif estado_actual == Estado.GOLPE2:
 				reproducir("golpe2")
 			elif estado_actual == Estado.GOLPE3:
-				reproducir("golpe1")  # o crea un golpe3.wav
+				reproducir("golpe1")
 			elif estado_actual == Estado.PATADA1:
 				reproducir("patada")
 			elif estado_actual == Estado.PATADA2:
