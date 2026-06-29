@@ -140,7 +140,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o7tw7"]
-radius = 63.007935
+radius = 55.00909
 
 [node name="BolaGiante" type="Area2D" unique_id=202409817]
 position = Vector2(18, -32)
@@ -155,3 +155,5 @@ animation = &"bolaBucle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1784809957]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_o7tw7")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=92943238]

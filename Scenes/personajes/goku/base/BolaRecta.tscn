@@ -94,3 +94,5 @@ animation = &"explosion"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=418154597]
 position = Vector2(16, 9)
 shape = SubResource("CircleShape2D_ar5i8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=488544343]

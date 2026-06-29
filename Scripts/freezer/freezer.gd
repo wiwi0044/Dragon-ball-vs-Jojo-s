@@ -11,7 +11,6 @@ var bola_precargada: Node = null
 var ultima_rafaga: int = 1
 var disparando: bool = false
 
-
 func _ready() -> void:
 	super._ready()
 
@@ -68,8 +67,6 @@ func _on_cambiar_estado(nuevo_estado: Estado) -> void:
 			sprite.play("atras")
 		Estado.BAJAR:
 			sprite.play("bajar")
-		Estado.RAPIDO_ADELANTE:
-			sprite.play("rapidoAdelante")
 		Estado.GOLPE1:
 			sprite.play("golpe1")
 			anim_player.play("golpe1")
@@ -85,14 +82,17 @@ func _on_cambiar_estado(nuevo_estado: Estado) -> void:
 			anim_player.play("patada1")
 		Estado.RAFAGA1:
 			sprite.play("rafaga1")
+			reproducir("disparo")
 		Estado.RAFAGA2:
 			sprite.play("rafaga2")
+			reproducir("disparo2")
 		Estado.LASER:
 			sprite.play("laser")
 		Estado.BOLA_GIGANTE:
 			sprite.play("bolaGigante")
 			sprite.pause()
 			sprite.frame = 0
+			reproducir("bola_freezer")
 			bola_precargada = bola_gigante_scene.instantiate()
 			get_parent().add_child(bola_precargada)
 			bola_precargada.global_position = punto_disparo.global_position + Vector2(0, -100)
@@ -154,6 +154,7 @@ func _lanzar_rafaga() -> void:
 	
 func _lanzar_laser() -> void:
 	disparando = true
+	reproducir("laser")
 	var dir = punto_disparo.global_position.direction_to(oponente.global_position)
 	sprite.rotation = dir.angle()
 	if sprite.scale.x < 0:
@@ -165,6 +166,7 @@ func _lanzar_laser() -> void:
 	l.inicializar(punto_disparo.global_position, oponente.global_position)
 
 func _lanzar_bola_gigante() -> void:
+	reproducir("bola_viajando")
 	if bola_precargada == null:
 		cambiar_estado(Estado.IDLE)
 		return
@@ -197,3 +199,8 @@ func orientar_a_oponente() -> void:
 	if disparando:
 		return
 	super.orientar_a_oponente()
+	
+func reproducir(sonido: String) -> void:
+	if sonidos.has(sonido):
+		audio.stream = sonidos[sonido]
+		audio.play()

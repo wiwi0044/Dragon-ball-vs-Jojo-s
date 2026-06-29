@@ -403,33 +403,9 @@ region = Rect2(336, 0, 112, 64)
 atlas = ExtResource("14_mvla4")
 region = Rect2(448, 0, 112, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ogv5q"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_njpml"]
 atlas = ExtResource("18_njpml")
 region = Rect2(0, 0, 112, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_eg5sg"]
-atlas = ExtResource("18_njpml")
-region = Rect2(112, 0, 112, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qk5bk"]
-atlas = ExtResource("18_njpml")
-region = Rect2(224, 0, 112, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u0r6n"]
-atlas = ExtResource("18_njpml")
-region = Rect2(336, 0, 112, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ym20q"]
-atlas = ExtResource("18_njpml")
-region = Rect2(448, 0, 112, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_s736l"]
-atlas = ExtResource("18_njpml")
-region = Rect2(560, 0, 112, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mq3bu"]
-atlas = ExtResource("18_njpml")
-region = Rect2(672, 0, 112, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gtbxx"]
 atlas = ExtResource("2_ith2g")
@@ -880,25 +856,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ogv5q")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_eg5sg")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qk5bk")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u0r6n")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ym20q")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s736l")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mq3bu")
+"texture": SubResource("AtlasTexture_njpml")
 }],
 "loop": true,
 "name": &"victoria",
@@ -931,7 +889,12 @@ texture_filter = 1
 position = Vector2(-23, -16)
 scale = Vector2(2.125, 2)
 sprite_frames = SubResource("SpriteFrames_t1ee5")
-animation = &"victoria"
+animation = &"kaioken"
+frame = 14
+frame_progress = 1.0
+
+[node name="PuntoDisparo" type="Marker2D" parent="." unique_id=183215691]
+position = Vector2(3.0517578e-05, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1572064627]
 position = Vector2(-21, 5)
@@ -947,6 +910,6 @@ shape = SubResource("CircleShape2D_7vwnh")
 disabled = true
 debug_color = Color(0.5995789, 0.370223, 1, 0.41960785)
 
-[node name="PuntoDisparo" type="Marker2D" parent="." unique_id=183215691]
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=1559492851]
 
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]

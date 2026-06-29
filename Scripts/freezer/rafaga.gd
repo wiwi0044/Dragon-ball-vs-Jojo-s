@@ -1,4 +1,5 @@
 extends Area2D
+@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 
 @export var velocidad: float = 600.0
 var direccion: Vector2 = Vector2.ZERO
@@ -31,6 +32,8 @@ func _on_body_entered(body: Node) -> void:
 func _explotar() -> void:
 	impactado = true
 	colision.set_deferred("disabled", true)
+	audio.stream = preload("res://Assets/Luchadores/goku/sonidos/explosion.wav")
+	audio.play()
 	sprite.play("explosion")
 	await sprite.animation_finished
 	queue_free()

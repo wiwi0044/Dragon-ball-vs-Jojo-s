@@ -1,4 +1,5 @@
 extends Area2D
+@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var colision: CollisionShape2D = $CollisionShape2D
@@ -51,6 +52,9 @@ func _physics_process(delta: float) -> void:
 			var avance = clamp(punto_choque, 0.1, 0.9)
 			global_position = pos_freezer.lerp(pos_goku, avance)
 			if punto_choque >= 0.9:
+				var pelea = get_parent()
+				if pelea and pelea.has_method("detener_temblor"):
+					pelea.detener_temblor()
 				choque_resuelto = true
 				if dueño and dueño.get("oponente"):
 					dueño.oponente.recibir_daño_especial(240)
@@ -61,6 +65,9 @@ func _physics_process(delta: float) -> void:
 					rival.queue_free()
 				_explotar()
 			elif punto_choque <= 0.1:
+				var pelea = get_parent()
+				if pelea and pelea.has_method("detener_temblor"):
+					pelea.detener_temblor()
 				choque_resuelto = true
 				if dueño and dueño.has_method("bola_gigante_termino"):
 					dueño.bola_gigante_termino()
@@ -73,6 +80,9 @@ func _physics_process(delta: float) -> void:
 	global_position += direccion * velocidad * delta
 
 func _on_area_entered(otra_area: Area2D) -> void:
+	var pelea = get_parent()
+	if pelea and pelea.has_method("temblar_camara"):
+		pelea.temblar_camara(8.0, 0.4)
 	if impactado or en_choque:
 		return
 	var otro = otra_area
@@ -90,6 +100,8 @@ func _on_area_entered(otra_area: Area2D) -> void:
 		pos_inicial = global_position
 		if dueño and dueño.has_method("entrar_choque_kamehameha"):
 			dueño.entrar_choque_kamehameha()
+			if pelea and pelea.has_method("iniciar_temblor"):
+				pelea.iniciar_temblor(6.0)
 		var rival_dueño = otro.get("dueño")
 		if rival_dueño and rival_dueño.has_method("entrar_choque_kamehameha"):
 			rival_dueño.entrar_choque_kamehameha()
@@ -117,6 +129,8 @@ func _explotar() -> void:
 	z_index = 10
 	impactado = true
 	colision.set_deferred("disabled", true)
+	audio.stream = preload("res://Assets/Luchadores/goku/sonidos/explosion.wav")
+	audio.play()
 	sprite.play("explosion")
 	await sprite.animation_finished
 	if dueño and dueño.has_method("bola_gigante_termino"):

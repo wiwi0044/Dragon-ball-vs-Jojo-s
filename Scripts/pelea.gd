@@ -106,6 +106,7 @@ func efecto_victoria(ganador: Node) -> void:
 	add_child(canvas)
 	
 	var label_winner = Label.new()
+	ganador.z_index = 10
 	label_winner.text = "WINNER"
 	label_winner.add_theme_font_override("font", fuente)
 	label_winner.add_theme_font_size_override("font_size", 120)
@@ -133,3 +134,22 @@ func efecto_victoria(ganador: Node) -> void:
 	
 	await get_tree().create_timer(1.5).timeout
 	get_tree().paused = true
+
+var temblando: bool = false
+
+func iniciar_temblor(intensidad: float = 5.0) -> void:
+	if temblando:
+		return
+	temblando = true
+	var pos_original = camara.position
+	while temblando:
+		var offset = Vector2(
+			randf_range(-intensidad, intensidad),
+			randf_range(-intensidad, intensidad)
+		)
+		camara.position = pos_original + offset
+		await get_tree().create_timer(0.05).timeout
+	camara.position = pos_original
+
+func detener_temblor() -> void:
+	temblando = false

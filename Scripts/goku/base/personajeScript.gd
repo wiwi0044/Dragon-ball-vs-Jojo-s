@@ -1,7 +1,8 @@
 extends CharacterBody2D
+@onready var audio: AudioStreamPlayer = $AudioPlayer
 
 enum Estado { INTRO, IDLE, ADELANTE, ATRAS, VOLAR, BAJAR, RAPIDO_ADELANTE, RAPIDO_ATRAS, RAPIDO_VOLAR, RAPIDO_BAJAR, GOLPE1, GOLPE2, GOLPE3
-, PATADA1, PATADA2, RECARGAR, CUBRIRSE, DERROTADO, GOLPEADO, MUY_GOLPEADO, RAFAGA1, RAFAGA2, RAFAGA3, KAMEHAMEHA_CARGA, KAMEHAMEHA_DISPARO
+, PATADA1, PATADA2, RECARGAR, CUBRIRSE, DERROTADO, GOLPEADO, MUY_GOLPEADO, RAFAGA1, RAFAGA2, KAMEHAMEHA_CARGA, KAMEHAMEHA_DISPARO
 , KIENZAN_CARGA, KIENZAN_DISPARO, TAIOKEN, KAIOKEN, KAMEHAMEHA_CHOQUE}
 var estado_actual: Estado = Estado.INTRO
 var estado_previo: Estado = Estado.IDLE
@@ -29,7 +30,6 @@ const VENTANA_DAÑO: float = 1.5
 
 @onready var punto_disparo: Marker2D = $PuntoDisparo
 var bola_recta = preload("res://Scenes/personajes/goku/base/BolaRecta.tscn")
-var bola_diagonal = preload("res://Scenes/personajes/goku/base/BolaDiagonal.tscn")
 var kamehameha_scene = preload("res://Scenes/personajes/goku/base/KamehamehaRayo.tscn")
 var ultima_rafaga: int = 2
 var tiempo_ki_presionado: float = 0.0
@@ -84,6 +84,30 @@ var mi_mask: int = 2
 var inputs_desactivados: bool = false
 
 
+var sonidos = {
+	"golpe1": preload("res://Assets/Luchadores/goku/sonidos/golpe1.wav"),
+	"golpe2": preload("res://Assets/Luchadores/goku/sonidos/golpe2.wav"),
+	"patada": preload("res://Assets/Luchadores/goku/sonidos/patada.wav"),
+	"patada2": preload("res://Assets/Luchadores/goku/sonidos/patada2.wav"),
+	"disparo": preload("res://Assets/Luchadores/goku/sonidos/disparo.wav"),
+	"disparo2": preload("res://Assets/Luchadores/goku/sonidos/disparo2.wav"),
+	"disparo3": preload("res://Assets/Luchadores/goku/sonidos/disparo3.wav"),
+	"explosion": preload("res://Assets/Luchadores/goku/sonidos/explosion.wav"),
+	"explosion2": preload("res://Assets/Luchadores/goku/sonidos/explosionPequeka.wav"),
+	"kamehameha_carga": preload("res://Assets/Luchadores/goku/sonidos/kamehamehaCarga.wav"),
+	"kamehameha_tiro": preload("res://Assets/Luchadores/goku/sonidos/kamehamehaTiro.wav"),
+	"kaioken": preload("res://Assets/Luchadores/goku/sonidos/kaioken.wav"),
+	"kaiokenGrito": preload("res://Assets/Luchadores/goku/sonidos/kaiokenGrito.wav"),
+	"choque": preload("res://Assets/Luchadores/goku/sonidos/choque.wav"),
+	"cubrirse": preload("res://Assets/Luchadores/goku/sonidos/cubierto.wav"),
+	"cubrirse2": preload("res://Assets/Luchadores/goku/sonidos/cubrirse2.wav"),
+	"cubrirse3": preload("res://Assets/Luchadores/goku/sonidos/curbirse3.wav"),
+	"movimiento_rapido": preload("res://Assets/Luchadores/goku/sonidos/movimientoRapido.wav"),
+	"movimiento_rapido2": preload("res://Assets/Luchadores/goku/sonidos/movimientoRapido2.wav"),
+	"inicio_carga": preload("res://Assets/Luchadores/goku/sonidos/inicioCarga.wav"),
+	"bucle_carga": preload("res://Assets/Luchadores/goku/sonidos/bucleCarga.wav"),
+}
+
 func _ready() -> void:
 	_inicializar_tiempos_tap()
 	sprite.animation_finished.connect(_on_animation_finished)
@@ -91,6 +115,9 @@ func _ready() -> void:
 	hitbox_shape.disabled = true
 	hitbox.body_entered.connect(_on_golpe_conectado)
 	sprite.frame_changed.connect(_on_frame_changed)
+	var stream = sonidos["bucle_carga"] as AudioStreamWAV
+	if stream:
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 
 func _inicializar_tiempos_tap() -> void:
 	tiempo_ultimo_tap = {
@@ -181,6 +208,7 @@ func _input(event: InputEvent) -> void:
 		cambiar_estado(Estado.RECARGAR)
 	if Input.is_action_just_released("recargar" + sufijo):
 		cambiar_estado(Estado.IDLE)
+		audio.stop()
 	if estado_actual == Estado.RECARGAR:
 		return
 
@@ -266,15 +294,19 @@ func cambiar_estado(nuevo_estado: Estado) -> void:
 		Estado.RAPIDO_ADELANTE:
 			mostrando_bajar = false
 			sprite.play("rapidoAdelante")
+			reproducir("movimiento_rapido")
 		Estado.RAPIDO_ATRAS:
 			mostrando_bajar = false
 			sprite.play("rapidoAtras")
+			reproducir("movimiento_rapido")
 		Estado.RAPIDO_VOLAR:
 			mostrando_bajar = false
 			sprite.play("rapidoVolar")
+			reproducir("movimiento_rapido")
 		Estado.RAPIDO_BAJAR:
 			mostrando_bajar = false
 			sprite.play("rapidoBajar")
+			reproducir("movimiento_rapido")
 		Estado.GOLPE1:
 			sprite.play("golpe1")
 		Estado.GOLPE2:
@@ -287,6 +319,7 @@ func cambiar_estado(nuevo_estado: Estado) -> void:
 			sprite.play("patada2")
 		Estado.RECARGAR:
 			sprite.play("recargar1")
+			reproducir("inicio_carga")
 		Estado.CUBRIRSE:
 			sprite.play("cubrirse")
 		Estado.GOLPEADO:
@@ -300,30 +333,42 @@ func cambiar_estado(nuevo_estado: Estado) -> void:
 				oponente.desactivar_inputs()
 			if oponente and oponente.has_method("play_victoria"):
 				oponente.play_victoria()
+				oponente.desactivar_inputs()  # asegura que se desactiven después de play_victoria
 			var pelea = get_parent()
 			if pelea and pelea.has_method("efecto_victoria"):
 				pelea.efecto_victoria(oponente)
 		Estado.RAFAGA1:
 			sprite.play("rafaga1")
-			var dir_x := -1.0 if sprite.flip_h else 1.0
-			_instanciar_bola_recta(dir_x)
+			var dir = punto_disparo.global_position.direction_to(oponente.global_position)
+			sprite.rotation = dir.angle()
+			if sprite.flip_h:
+				sprite.rotation += PI
+			_instanciar_bola_recta_dir(dir)
+			reproducir("disparo")
 		Estado.RAFAGA2:
 			sprite.play("rafaga2")
-			var dir_x := -1.0 if sprite.flip_h else 1.0
-			_instanciar_bola_recta(dir_x)
-		Estado.RAFAGA3:
-			sprite.play("rafaga3")
+			var dir = punto_disparo.global_position.direction_to(oponente.global_position)
+			sprite.rotation = dir.angle()
+			if sprite.flip_h:
+				sprite.rotation += PI
+			_instanciar_bola_recta_dir(dir)
+			reproducir("disparo2")
+		
 		Estado.KAMEHAMEHA_CARGA:
 			if ki_actual >= 100:
 				sprite.play("kamehameha_carga")
+				reproducir("kamehameha_carga")
 		Estado.KAMEHAMEHA_DISPARO:
 			kamehameha_disparado = false
 			sprite.play("kamehameha_disparo")
+			reproducir("kamehameha_tiro")
 		Estado.KIENZAN_CARGA:
 			kienzan_disparado = false
 			sprite.play("kienzanCarga")
+			reproducir("movimiento_rapido2")
 		Estado.TAIOKEN:
 			sprite.play("taioken")
+			reproducir("disparo3")
 		Estado.KAIOKEN:
 			frames_kaioken_golpeados = []
 			kaioken_conecto = false
@@ -333,6 +378,10 @@ func cambiar_estado(nuevo_estado: Estado) -> void:
 			sprite.frame = sprite.sprite_frames.get_frame_count("kamehameha_disparo") - 1
 
 func procesar_movimiento(dir: Vector2, delta: float) -> void:
+	if inputs_desactivados:
+		velocity = Vector2.ZERO
+		return
+	
 	if estado_actual == Estado.INTRO:
 		velocity = Vector2.ZERO
 		return
@@ -360,7 +409,7 @@ func procesar_movimiento(dir: Vector2, delta: float) -> void:
 			velocity.y += 980 * delta
 		velocity.x = move_toward(velocity.x, 0, friccion * delta)
 		return
-	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2, Estado.RAFAGA3]:
+	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2]:
 		velocity = Vector2.ZERO
 		return
 	if estado_actual in [Estado.KAMEHAMEHA_CARGA, Estado.KAMEHAMEHA_DISPARO]:
@@ -392,7 +441,7 @@ func actualizar_estado(dir: Vector2) -> void:
 		return
 	if estado_actual in [Estado.GOLPEADO, Estado.MUY_GOLPEADO, Estado.DERROTADO]:
 		return
-	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2, Estado.RAFAGA3]:
+	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2]:
 		return
 	if estado_actual in [Estado.KAMEHAMEHA_CARGA, Estado.KAMEHAMEHA_DISPARO]:
 		return
@@ -430,6 +479,10 @@ func orientar_a_oponente() -> void:
 	if oponente == null:
 		return
 	if estado_actual == Estado.KAMEHAMEHA_CHOQUE:
+		return
+	if estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2]:
+		return
+	if inputs_desactivados:
 		return
 	sprite.flip_h = oponente.global_position.x < global_position.x
 	sprite.rotation = 0.0
@@ -535,6 +588,7 @@ func _on_animation_finished() -> void:
 		cambiar_estado(Estado.IDLE)
 	elif estado_actual == Estado.RECARGAR and sprite.animation == "recargar1":
 		sprite.play("recargarBucle")
+		reproducir("bucle_carga")
 	elif estado_actual == Estado.GOLPEADO:
 		cambiar_estado(Estado.IDLE)
 	elif estado_actual == Estado.MUY_GOLPEADO:
@@ -542,8 +596,9 @@ func _on_animation_finished() -> void:
 	elif estado_actual == Estado.DERROTADO:
 		sprite.pause()
 		sprite.frame = sprite.sprite_frames.get_frame_count("derrotado") - 1
-	elif estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2, Estado.RAFAGA3]:
+	elif estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2]:
 		cambiar_estado(Estado.IDLE)
+		sprite.rotation=0.0
 	elif estado_actual == Estado.KAMEHAMEHA_DISPARO:
 		if not kamehameha_activo:
 			cambiar_estado(Estado.IDLE)
@@ -616,12 +671,7 @@ func _on_frame_changed() -> void:
 			hitbox_shape.disabled = true
 	elif estado_actual in [Estado.RAFAGA1, Estado.RAFAGA2]:
 		pass
-	elif estado_actual == Estado.RAFAGA3:
-		var dir_x := -1.0 if sprite.flip_h else 1.0
-		if sprite.frame == 1:
-			_instanciar_bola_diagonal(dir_x)
-		elif sprite.frame == 2:
-			_instanciar_bola_diagonal(dir_x)
+	
 	elif estado_actual == Estado.KAMEHAMEHA_DISPARO:
 		if sprite.frame == 0 and not kamehameha_disparado:
 			kamehameha_disparado = true
@@ -664,6 +714,7 @@ func _on_golpe_conectado(body: Node) -> void:
 	if body == oponente:
 		if estado_actual == Estado.KAIOKEN and not kaioken_conecto:
 			kaioken_conecto = true
+			reproducir("kaioken")
 			if oponente.has_method("desactivar_inputs"):
 				oponente.desactivar_inputs()
 			if 3 in FRAMES_KAIOKEN:
@@ -671,7 +722,18 @@ func _on_golpe_conectado(body: Node) -> void:
 				oponente.recibir_golpe_kaioken(20, FRAMES_KAIOKEN[3])
 		elif estado_actual != Estado.KAIOKEN:
 			oponente.recibir_daño(10)
-
+			if estado_actual == Estado.GOLPE1:
+				reproducir("golpe1")
+			elif estado_actual == Estado.GOLPE2:
+				reproducir("golpe2")
+			elif estado_actual == Estado.GOLPE3:
+				reproducir("golpe1")  # o crea un golpe3.wav
+			elif estado_actual == Estado.PATADA1:
+				reproducir("patada")
+			elif estado_actual == Estado.PATADA2:
+				reproducir("patada2")
+			else:
+				reproducir("golpe1")
 func _registrar_patada() -> void:
 	if estado_actual not in [Estado.PATADA1, Estado.PATADA2]:
 		cambiar_estado(Estado.PATADA1)
@@ -702,6 +764,8 @@ func actualizar_barra_por_capas(barra: ProgressBar, valor_actual: float, valor_m
 func recibir_daño(cantidad: float) -> void:
 	if estado_actual == Estado.CUBRIRSE:
 		cantidad *= 0.2
+		var cubiertas = ["cubrirse", "curbirse3"]
+		reproducir(cubiertas[randi() % cubiertas.size()])
 	vida_total_actual = max(vida_total_actual - cantidad, 0)
 	if vida_total_actual == 0:
 		cambiar_estado(Estado.DERROTADO)
@@ -742,39 +806,24 @@ func recibir_golpe_kaioken(cantidad: float, impulso: Vector2) -> void:
 	else:
 		velocity = impulso
 
-func _instanciar_bola_recta(dir_x: float) -> void:
+func _instanciar_bola_recta_dir(dir: Vector2) -> void:
 	if ki_actual < 15: return
 	ki_actual = max(ki_actual - 15, 0)
 	var bola = bola_recta.instantiate()
-	bola.direccion = Vector2(dir_x, 0)
+	bola.direccion = dir
 	bola.global_position = punto_disparo.global_position
 	bola.collision_layer = mi_layer
 	bola.collision_mask = mi_mask
 	get_parent().add_child(bola)
 
-func _instanciar_bola_diagonal(dir_x: float) -> void:
-	if ki_actual < 15: return
-	ki_actual = max(ki_actual - 15, 0)
-	if oponente:
-		dir_x = sign(oponente.global_position.x - global_position.x)
-		if dir_x == 0: dir_x = 1.0
-	var bola = bola_diagonal.instantiate()
-	bola.global_position = punto_disparo.global_position
-	bola.direccion = Vector2(dir_x, 0.5).normalized()
-	bola.collision_layer = mi_layer
-	bola.collision_mask = mi_mask
-	get_parent().add_child(bola)
 
 func _lanzar_rafaga() -> void:
-	if oponente and global_position.y < oponente.global_position.y - 30:
-		cambiar_estado(Estado.RAFAGA3)
+	if ultima_rafaga == 1:
+		ultima_rafaga = 2
+		cambiar_estado(Estado.RAFAGA2)
 	else:
-		if ultima_rafaga == 1:
-			ultima_rafaga = 2
-			cambiar_estado(Estado.RAFAGA2)
-		else:
-			ultima_rafaga = 1
-			cambiar_estado(Estado.RAFAGA1)
+		ultima_rafaga = 1
+		cambiar_estado(Estado.RAFAGA1)
 
 func _disparar_kamehameha() -> void:
 	var daño: float = 100
@@ -859,3 +908,8 @@ func configurar(config: Dictionary) -> void:
 	
 func play_victoria() -> void:
 	sprite.play("victoria")
+	
+func reproducir(sonido: String) -> void:
+	if sonidos.has(sonido):
+		audio.stream = sonidos[sonido]
+		audio.play()

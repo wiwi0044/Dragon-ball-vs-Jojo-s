@@ -1,11 +1,32 @@
 class_name PersonajeBaseDBZ
 extends CharacterBody2D
 
+@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
+
+var sonidos = {
+	"golpe1": preload("res://Assets/Luchadores/goku/sonidos/golpe1.wav"),
+	"golpe2": preload("res://Assets/Luchadores/goku/sonidos/golpe2.wav"),
+	"patada": preload("res://Assets/Luchadores/goku/sonidos/patada.wav"),
+	"patada2": preload("res://Assets/Luchadores/goku/sonidos/patada2.wav"),
+	"disparo": preload("res://Assets/Luchadores/goku/sonidos/disparo.wav"),
+	"disparo2": preload("res://Assets/Luchadores/goku/sonidos/disparo2.wav"),
+	"explosion": preload("res://Assets/Luchadores/goku/sonidos/explosion.wav"),
+	"cubrirse": preload("res://Assets/Luchadores/goku/sonidos/cubierto.wav"),
+	"cubrirse2": preload("res://Assets/Luchadores/goku/sonidos/cubrirse2.wav"),
+	"cubrirse3": preload("res://Assets/Luchadores/goku/sonidos/curbirse3.wav"),
+	"movimiento_rapido": preload("res://Assets/Luchadores/goku/sonidos/movimientoRapido.wav"),
+	"movimiento_rapido2": preload("res://Assets/Luchadores/goku/sonidos/movimientoRapido2.wav"),
+	"bola_freezer": preload("res://Assets/Luchadores/goku/sonidos/bolaFreezer.wav"),
+	"bola_viajando": preload("res://Assets/Luchadores/goku/sonidos/bolaViajando.wav"),
+	"inicio_carga": preload("res://Assets/Luchadores/goku/sonidos/inicioCarga.wav"),
+	"bucle_carga": preload("res://Assets/Luchadores/goku/sonidos/bucleCarga.wav"),
+	"laser": preload("res://Assets/Luchadores/goku/sonidos/laser.wav")
+}
+
 enum Estado { INTRO, IDLE, ADELANTE, ATRAS, VOLAR, BAJAR, 
 	RAPIDO_ADELANTE, RAPIDO_ATRAS, RAPIDO_VOLAR, RAPIDO_BAJAR,
 	GOLPE1, GOLPE2, GOLPE3, PATADA1, PATADA2, RAFAGA1, RAFAGA2,
 	RECARGAR, CUBRIRSE, DERROTADO, GOLPEADO, MUY_GOLPEADO, LASER, BOLA_GIGANTE, CHOQUE}
-
 var estado_actual: Estado = Estado.INTRO
 var estado_previo: Estado = Estado.IDLE
 var sufijo: String = "J1"
@@ -110,6 +131,7 @@ func _input(event: InputEvent) -> void:
 		cambiar_estado(Estado.RECARGAR)
 	if Input.is_action_just_released("recargar" + sufijo):
 		cambiar_estado(Estado.IDLE)
+		audio.stop()
 	if estado_actual == Estado.RECARGAR:
 		return
 
@@ -182,16 +204,27 @@ func _on_cambiar_estado(nuevo_estado: Estado) -> void:
 				mostrando_bajar = true
 				sprite.play("bajar")
 				sprite.frame = 0
-		Estado.RAPIDO_ADELANTE: sprite.play("rapidoAdelante")
-		Estado.RAPIDO_ATRAS: sprite.play("rapidoAtras")
-		Estado.RAPIDO_VOLAR: sprite.play("rapidoVolar")
-		Estado.RAPIDO_BAJAR: sprite.play("rapidoBajar")
+		Estado.RAPIDO_ADELANTE:
+			sprite.play("rapidoAdelante")
+			reproducir("movimiento_rapido")
+		Estado.RAPIDO_ATRAS:
+			sprite.play("rapidoAtras")
+			reproducir("movimiento_rapido")
+		Estado.RAPIDO_VOLAR:
+			sprite.play("rapidoVolar")
+			reproducir("movimiento_rapido2")
+		Estado.RAPIDO_BAJAR:
+			sprite.play("rapidoBajar")
+			reproducir("movimiento_rapido2")
+		Estado.RECARGAR:
+			sprite.play("recargar1")
+			reproducir("inicio_carga")
+
 		Estado.GOLPE1: sprite.play("golpe1")
 		Estado.GOLPE2: sprite.play("golpe2")
 		Estado.GOLPE3: sprite.play("golpe3")
 		Estado.PATADA1: sprite.play("patada1")
 		Estado.PATADA2: sprite.play("patada2")
-		Estado.RECARGAR: sprite.play("recargar1")
 		Estado.CUBRIRSE: sprite.play("cubrirse")
 		Estado.GOLPEADO: sprite.play("golpeado")
 		Estado.MUY_GOLPEADO: sprite.play("muyGolpeado")
@@ -208,6 +241,9 @@ func _on_cambiar_estado(nuevo_estado: Estado) -> void:
 				
 
 func procesar_movimiento(dir: Vector2, delta: float) -> void:
+	if inputs_desactivados:
+		velocity = Vector2.ZERO
+		return
 	if estado_actual == Estado.INTRO:
 		velocity = Vector2.ZERO
 		return
@@ -325,6 +361,8 @@ func _on_animation_finished() -> void:
 		Estado.RECARGAR:
 			if sprite.animation == "recargar1":
 				sprite.play("recargarBucle")
+				reproducir("bucle_carga")
+
 		Estado.GOLPEADO:
 			cambiar_estado(Estado.IDLE)
 		Estado.MUY_GOLPEADO:
@@ -361,6 +399,16 @@ func _registrar_patada() -> void:
 func _on_golpe_conectado(body: Node) -> void:
 	if body == oponente:
 		oponente.recibir_daño(10)
+		if estado_actual == Estado.GOLPE1:
+			reproducir("golpe1")
+		elif estado_actual == Estado.GOLPE2:
+			reproducir("golpe2")
+		elif estado_actual == Estado.GOLPE3:
+			reproducir("golpe1")
+		elif estado_actual == Estado.PATADA1:
+			reproducir("patada")
+		elif estado_actual == Estado.PATADA2:
+			reproducir("patada2")
 
 func actualizar_barra_por_capas(barra: ProgressBar, valor_actual: float, valor_maximo: float, lista_colores: Array) -> void:
 	var capa_actual: int = 0
@@ -385,6 +433,8 @@ func actualizar_barra_por_capas(barra: ProgressBar, valor_actual: float, valor_m
 func recibir_daño(cantidad: float) -> void:
 	if estado_actual == Estado.CUBRIRSE:
 		cantidad *= 0.2
+		var cubiertas = ["cubrirse", "cubrirse3"]
+		reproducir(cubiertas[randi() % cubiertas.size()])
 	vida_total_actual = max(vida_total_actual - cantidad, 0)
 	if vida_total_actual == 0:
 		cambiar_estado(Estado.DERROTADO)
@@ -450,6 +500,13 @@ func configurar(config: Dictionary) -> void:
 		mi_layer = config["layer"]
 	if config.has("mask"):
 		mi_mask = config["mask"]
+
+func reproducir(sonido: String) -> void:
+	if not is_inside_tree():
+		return
+	if sonidos.has(sonido) and audio:
+		audio.stream = sonidos[sonido]
+		audio.play()
 
 func play_victoria() -> void:
 	sprite.play("victoria")

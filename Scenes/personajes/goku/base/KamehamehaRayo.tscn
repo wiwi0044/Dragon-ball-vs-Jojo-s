@@ -111,4 +111,6 @@ position = Vector2(164.00003, -34.250008)
 scale = Vector2(2.875, 2.5562499)
 texture = ExtResource("5_ro425")
 
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=1233830880]
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

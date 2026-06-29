@@ -1,5 +1,5 @@
 extends Node2D
-
+@onready var audio: AudioStreamPlayer = $AudioPlayer
 @onready var inicio: Sprite2D = $SpriteInicio
 @onready var medio: Sprite2D = $SpriteMedio
 @onready var fin: Sprite2D = $SpriteFin
@@ -83,24 +83,35 @@ func _physics_process(delta: float) -> void:
 				choque_resuelto = true
 				gane_choque = true
 				rival.choque_resuelto = true
+				var pelea = get_parent()
+				if pelea and pelea.has_method("detener_temblor"):
+					pelea.detener_temblor()
 				var rival_dueño = rival.get("dueño")
 				if rival_dueño and rival_dueño.has_method("kamehameha_termino"):
 					rival_dueño.kamehameha_termino()
-				rival.queue_free()
+				if dueño and dueño.get("oponente") and dueño.oponente.has_method("recibir_daño_especial"):
+					dueño.oponente.recibir_daño_especial(240)
+				rival.call_deferred("queue_free")
 				en_choque = false
 				rival = null
 				choque_sprite.visible = false
 				fin.visible = true
 				distancia_objetivo = dist_total + 200.0
+				await get_tree().create_timer(0.5).timeout
+				if not impactado:
+					_explotar()
 			elif punto_choque <= 0.1:
 				if rival and rival.get("choque_resuelto"):
 					return
 				choque_resuelto = true
 				rival.choque_resuelto = true
+				var pelea = get_parent()
+				if pelea and pelea.has_method("detener_temblor"):
+					pelea.detener_temblor()
 				var rival_dueño = rival.get("dueño")
 				rival.en_choque = false
 				rival.rival = null
-				rival.queue_free()
+				rival.call_deferred("queue_free")
 				if dueño and dueño.has_method("kamehameha_termino"):
 					dueño.kamehameha_termino()
 				if rival_dueño and rival_dueño.has_method("recibir_daño_especial"):
@@ -145,6 +156,9 @@ func _on_area_entered(otra_area: Area2D) -> void:
 			otro.choque_sprite.position.x = otro.ancho_inicio + otro.largo_medio_actual
 		if dueño and dueño.has_method("entrar_choque_kamehameha"):
 			dueño.entrar_choque_kamehameha()
+			var pelea = get_parent()
+			if pelea and pelea.has_method("iniciar_temblor"):
+				pelea.iniciar_temblor(6.0)
 		var rival_dueño = otro.get("dueño")
 		if rival_dueño and rival_dueño.has_method("entrar_choque_kamehameha"):
 			rival_dueño.entrar_choque_kamehameha()
@@ -174,8 +188,8 @@ func _explotar() -> void:
 	fin.visible = false
 	colision.set_deferred("disabled", true)
 	choque_sprite.visible = false
-	if gane_choque and dueño and dueño.oponente and dueño.oponente.has_method("recibir_daño_especial"):
-		dueño.oponente.recibir_daño_especial(240)
+	audio.stream = preload("res://Assets/Luchadores/goku/sonidos/explosion.wav")
+	audio.play()
 	explosion.position.x = ancho_inicio + largo_medio_actual
 	explosion.visible = true
 	explosion.play("explosion")
@@ -183,6 +197,7 @@ func _explotar() -> void:
 func _on_explosion_finished() -> void:
 	if dueño and dueño.has_method("kamehameha_termino"):
 		dueño.kamehameha_termino()
+	await audio.finished
 	queue_free()
 
 func destruir() -> void:

@@ -89,4 +89,6 @@ animation = &"disparo"
 position = Vector2(13.999997, 1.0000019)
 shape = SubResource("CircleShape2D_5xrb7")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=322449538]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
